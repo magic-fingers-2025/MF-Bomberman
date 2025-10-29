@@ -1,5 +1,5 @@
 import wollok.game.*
-
+import bloques.*
 import bomberman.*
 
 program Mf_Bomberman {
@@ -7,7 +7,7 @@ program Mf_Bomberman {
 // Titulo del juego
 	game.title("MF - Bomberman")
 // Dimensiones del tablero
-	game.height(10)
+	game.height(13)
 	game.width(15)
 // Fondo del tablero
 	game.boardGround("fondoEspacio.jpg")
@@ -27,5 +27,26 @@ const rivales = [new Rival(numero=1), new Rival(numero=2),new Rival(numero=3),ne
 			rival.acercarseA(bomberman)
 		})
 	}
+// Muros perimetrales
+	(0..game.width() - 1).forEach { x =>
+	game.addVisual(new Muro(position = game.at(x, 0)))
+	game.addVisual(new Muro(position = game.at(x, game.height() - 1)))
+}
+
+(0..game.height() - 1).forEach { y =>
+	game.addVisual(new Muro(position = game.at(0, y)))
+	game.addVisual(new Muro(position = game.at(game.width() - 1, y)))
+}
+// Muros internos y bloques
+	(1..game.width() - 2).forEach { x =>
+		(1..game.height() - 2).forEach { y =>
+			if (x % 2 == 0 and y % 2 == 0) {
+				game.addVisual(new Muro(position = game.at(x, y)))
+			} else if (1.randomUpTo(4) == 1) {
+				game.addVisual(new Bloque(position = game.at(x, y)))
+			}
+		}
+	}
+
 	game.start()
 }

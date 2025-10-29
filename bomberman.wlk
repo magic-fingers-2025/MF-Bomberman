@@ -1,6 +1,15 @@
+import bomba.*
+
 object bomberman {
 	const property image = "bomberman.png"
 	var property position = game.origin()
+/*
+  method colocarBomba() {
+	const bomba = bombaFactory.crearBomba(position, poder, game)
+		game.addVisual(bomba)
+		game.schedule(2000, { bomba.explotar() })
+	}
+*/
 }
 
 class Rival {
