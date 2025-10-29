@@ -1,0 +1,31 @@
+import wollok.game.*
+
+import bomberman.*
+
+program Mf_Bomberman {
+
+// Titulo del juego
+	game.title("MF - Bomberman")
+// Dimensiones del tablero
+	game.height(10)
+	game.width(15)
+// Fondo del tablero
+	game.boardGround("fondoEspacio.jpg")
+
+// Personaje principal
+	game.addVisualCharacter(bomberman)
+	game.showAttributes(bomberman) 
+
+const rivales = [new Rival(numero=1), new Rival(numero=2),new Rival(numero=3),new Rival(numero=4)]
+	
+	rivales.forEach { rival => 
+		game.addVisual(rival)
+		game.whenCollideDo(rival, { personaje =>
+			personaje.chocarCon(rival) // se maneja un método polimórfico
+		})
+		game.onTick(1.randomUpTo(5) * 500, "movimiento", {
+			rival.acercarseA(bomberman)
+		})
+	}
+	game.start()
+}
