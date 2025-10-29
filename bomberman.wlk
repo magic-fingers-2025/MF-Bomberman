@@ -17,7 +17,7 @@ class Rival {
 	var property position = game.at(3, 3)
 	var previousPosition = position
 
-	method image() = "rival" + numero.toString() + ".png"
+	method image() = "enemigo.png"
 
 	method acercarseA(personaje) {
 		const otroPosicion = personaje.position()
