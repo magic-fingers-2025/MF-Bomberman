@@ -1,52 +1,39 @@
 import wollok.game.*
-import bloques.*
-import bomberman.*
+import Magic.*
 
-program Mf_Bomberman {
+program mainBomberman {
 
-// Titulo del juego
 	game.title("MF - Bomberman")
-// Dimensiones del tablero
-	game.height(13)
 	game.width(15)
-// Fondo del tablero
-	game.boardGround("fondoEspacio.jpg")
+	game.height(13)
+	game.boardGround("fondo.jpg")
 
-// Personaje principal
-	game.addVisualCharacter(bomberman)
-	game.showAttributes(bomberman) 
+	// Inicializamos las posiciones prohibidas
+	posicionesProhibidas.inicializar(game)
 
-const rivales = [new Rival(numero=1), new Rival(numero=2),new Rival(numero=3),new Rival(numero=4)]
-	
-	rivales.forEach { rival => 
-		game.addVisual(rival)
-		game.whenCollideDo(rival, { personaje =>
-			personaje.chocarCon(rival) // se maneja un método polimórfico
-		})
-		game.onTick(1.randomUpTo(5) * 500, "movimiento", {
-			rival.acercarseA(bomberman)
-		})
-	}
-// Muros perimetrales
-	(0..game.width() - 1).forEach { x =>
-	game.addVisual(new Muro(position = game.at(x, 0)))
-	game.addVisual(new Muro(position = game.at(x, game.height() - 1)))
-}
+	// 👦 Instanciamos al jugador principal
+	const player = new Bomberman(position = game.at(2, 2), game = game)
+	game.addVisualCharacter(player)
+	game.showAttributes(player)
 
-(0..game.height() - 1).forEach { y =>
-	game.addVisual(new Muro(position = game.at(0, y)))
-	game.addVisual(new Muro(position = game.at(game.width() - 1, y)))
-}
-// Muros internos y bloques
-	(1..game.width() - 2).forEach { x =>
-		(1..game.height() - 2).forEach { y =>
-			if (x % 2 == 0 and y % 2 == 0) {
-				game.addVisual(new Muro(position = game.at(x, y)))
-			} else if (1.randomUpTo(4) == 1) {
-				game.addVisual(new Bloque(position = game.at(x, y)))
-			}
-		}
-	}
+	// 👾 Enemigos
+	const enemigos = [
+		new Enemigo(numero = 1, position = game.at(3, 3), game = game),
+		new Enemigo(numero = 2, position = game.at(11, 9), game = game)
+	]
+	enemigos.forEach { e => game.addVisual(e) }
+
+	// 🎮 Controles del jugador (player ya está definido antes)
+	keyboard.up().onPressDo({ player.moverA(player.position().up()) })
+	keyboard.down().onPressDo({ player.moverA(player.position().down()) })
+	keyboard.left().onPressDo({ player.moverA(player.position().left()) })
+	keyboard.right().onPressDo({ player.moverA(player.position().right()) })
+	keyboard.space().onPressDo({ player.colocarBomba() })
+
+	// 🔁 Movimiento automático de enemigos
+	game.onTick(800, "moverEnemigos", {
+		enemigos.forEach { e => e.moverAleatorio() }
+	})
 
 	game.start()
 }
