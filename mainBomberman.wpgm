@@ -1,46 +1,62 @@
-import game.*
-import magic.*
+import wollok.game.*
+import controlesYObjetos.*
 
 program mainBomberman {
 
-	game.title("MF - Bomberman")
-	game.width(15)
-	game.height(13)
-	game.boardGround("fondo.jpg")
-    
-	// --- Personaje principal ---
+  // CONFIGURACIÓN INICIAL DEL JUEGO
+  game.title("💣 Bomberman UNaHur 💥")
+  game.width(13)
+  game.height(11)
+  game.cellSize(50)
+  game.boardGround("suelo.png")
 
-	
-	game.addVisualCharacter(bomberman)
-	game.showAttributes(bomberman)
+  // CREAR FONDO CON MUROS PERIMETRALES Y CENTRALES
+  (0..game.width() - 1).forEach { x =>
+    (0..game.height() - 1).forEach { y =>
+      if (x == 0 or y == 0 or x == game.width() - 1 or y == game.height() - 1 or (x % 2 == 0 and y % 2 == 0)) {
+        const muro = new Muro(position = game.at(x, y))
+        game.addVisual(muro)
+      }
+    }
+  }
 
-	// --- Enemigos ---
-	const enemigos = [
-		new Enemigo(numero = 1, dificultad = "facil"),
-		new Enemigo(numero = 2, dificultad = "facil"),
-		new Enemigo(numero = 3, dificultad = "dificil"),
-		new Enemigo(numero = 4, dificultad = "dificil")
-	]
+  // MUROS ROMPIBLES INTERNOS
+  (1..game.width() - 2).forEach { x =>
+    (1..game.height() - 2).forEach { y =>
+      if ((x + y) % 3 == 0 and not (x % 2 == 0 and y % 2 == 0)) {
+        const muroR = new MuroRompible(position = game.at(x, y))
+        game.addVisual(muroR)
+      }
+    }
+  }
 
-	enemigos.forEach { enemigo =>
-		game.addVisual(enemigo)
-		game.whenCollideDo(enemigo, { personaje =>
-			personaje.chocarCon(enemigo)
-		})
-		game.onTick(1000, "movimiento" + enemigo.numero(), {
-			enemigo.mover()
-		})
-	}
+  // PERSONAJE PRINCIPAL
+  game.addVisualCharacter(bomberman)
 
-	// --- Crear muros y bloques ---
-	posicionesProhibidas.generarEstructuraDelMapa(game)
+  // ENEMIGOS
+  const enemigos = [
+    new Enemigo(position = game.at(5, 5)),
+    new Enemigo(position = game.at(8, 8))
+  ]
+  enemigos.forEach { e => game.addVisual(e) }
 
-	// --- Controles de movimiento ---
-	keyboard.up().onPressDo({ bomberman.moverA(bomberman.position.up()) })
-	keyboard.down().onPressDo({ bomberman.moverA(bomberman.position.down()) })
-	keyboard.left().onPressDo({ bomberman.moverA(bomberman.position.left()) })
-	keyboard.right().onPressDo({ bomberman.moverA(bomberman.position.right()) })
-	keyboard.space().onPressDo({ bomberman.colocarBomba() })
+  // MOVIMIENTO AUTOMÁTICO DE ENEMIGOS
+  const tick = game.tick(1500, {
+    enemigos.forEach { e => e.moverFacil() }
+  }, true)
+  tick.start()
 
-	game.start()
+  // COLISIONES CON ENEMIGOS
+  game.onCollideDo(bomberman, { elemento =>
+    if (elemento.isA(Enemigo)) bomberman.recibirDanio()
+  })
+
+  // CONTROLES DE MOVIMIENTO Y BOMBA
+  keyboard.up().onPressDo({ bomberman.moverA(bomberman.position.up(1)) })
+  keyboard.down().onPressDo({ bomberman.moverA(bomberman.position.down(1)) })
+  keyboard.left().onPressDo({ bomberman.moverA(bomberman.position.left(1)) })
+  keyboard.right().onPressDo({ bomberman.moverA(bomberman.position.right(1)) })
+  keyboard.space().onPressDo({ bomberman.colocarBomba() })
+
+  game.start()
 }
