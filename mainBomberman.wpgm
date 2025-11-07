@@ -1,5 +1,5 @@
-import wollok.game.*
-import Magic.*
+import game.*
+import magic.*
 
 program mainBomberman {
 
@@ -7,33 +7,40 @@ program mainBomberman {
 	game.width(15)
 	game.height(13)
 	game.boardGround("fondo.jpg")
+    
+	// --- Personaje principal ---
 
-	// Inicializamos las posiciones prohibidas
-	posicionesProhibidas.inicializar(game)
+	
+	game.addVisualCharacter(bomberman)
+	game.showAttributes(bomberman)
 
-	// 👦 Instanciamos al jugador principal
-	const player = new Bomberman(position = game.at(2, 2), game = game)
-	game.addVisualCharacter(player)
-	game.showAttributes(player)
-
-	// 👾 Enemigos
+	// --- Enemigos ---
 	const enemigos = [
-		new Enemigo(numero = 1, position = game.at(3, 3), game = game),
-		new Enemigo(numero = 2, position = game.at(11, 9), game = game)
+		new Enemigo(numero = 1, dificultad = "facil"),
+		new Enemigo(numero = 2, dificultad = "facil"),
+		new Enemigo(numero = 3, dificultad = "dificil"),
+		new Enemigo(numero = 4, dificultad = "dificil")
 	]
-	enemigos.forEach { e => game.addVisual(e) }
 
-	// 🎮 Controles del jugador (player ya está definido antes)
-	keyboard.up().onPressDo({ player.moverA(player.position().up()) })
-	keyboard.down().onPressDo({ player.moverA(player.position().down()) })
-	keyboard.left().onPressDo({ player.moverA(player.position().left()) })
-	keyboard.right().onPressDo({ player.moverA(player.position().right()) })
-	keyboard.space().onPressDo({ player.colocarBomba() })
+	enemigos.forEach { enemigo =>
+		game.addVisual(enemigo)
+		game.whenCollideDo(enemigo, { personaje =>
+			personaje.chocarCon(enemigo)
+		})
+		game.onTick(1000, "movimiento" + enemigo.numero(), {
+			enemigo.mover()
+		})
+	}
 
-	// 🔁 Movimiento automático de enemigos
-	game.onTick(800, "moverEnemigos", {
-		enemigos.forEach { e => e.moverAleatorio() }
-	})
+	// --- Crear muros y bloques ---
+	posicionesProhibidas.generarEstructuraDelMapa(game)
+
+	// --- Controles de movimiento ---
+	keyboard.up().onPressDo({ bomberman.moverA(bomberman.position.up()) })
+	keyboard.down().onPressDo({ bomberman.moverA(bomberman.position.down()) })
+	keyboard.left().onPressDo({ bomberman.moverA(bomberman.position.left()) })
+	keyboard.right().onPressDo({ bomberman.moverA(bomberman.position.right()) })
+	keyboard.space().onPressDo({ bomberman.colocarBomba() })
 
 	game.start()
 }
