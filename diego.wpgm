@@ -1,0 +1,136 @@
+
+import wollok.game.*
+
+program bomberman {
+
+  game.title("Bomberman")
+  game.width(27)
+  game.height(13)
+  game.cellSize(32)
+
+  game.boardGround("") // aca hay que definir un fondo
+  game.addVisual(personaje)
+ 
+
+
+
+
+
+
+ personaje.agregarBloques()  // aca llamo al metodo aggregar bloques que esta dentro de personaje
+
+ game.start()
+
+  
+
+  keyboard.w().onPressDo({ personaje.moverseHaciaArriba() })
+  keyboard.s().onPressDo({ personaje.moverseHaciaAbajo() })
+  keyboard.d().onPressDo({ personaje.moverseHaciaDerecha() })
+  keyboard.a().onPressDo({ personaje.moverseHaciaIzquierda() })
+
+  
+}
+
+object personaje {
+  var property sonidoCaminar = game.sound("player_run.mp3")  // le agrege un sonido al caminar y lo edite para que sea mas corto y no haga eco ( pero dejo de funcionar lo tengo que revisar)
+  var property direccion = "frente"
+  var property frameActual = 1
+  var property position = game.at(6, 6)
+
+  // aca ponemos todas las coordenadas que queremos bloquar y luego vamos a rellebar con la misma imagen
+  const coordenadasBloqueadas = [
+    [6, 5],
+    [8, 5],
+    [12, 5],
+    [16, 5],
+    [22, 5],
+    [18, 2],
+    [1, 17]
+  ]
+
+ // con este metodo verifico si las coordenadas etsan dentro de la lista son las bloqueadas
+  method estaBloqueada(x, y) {
+    return coordenadasBloqueadas.contains([x, y])
+  }
+
+  
+ // aca hago la transcion de imagenes segun la direccion   
+
+  method image() {
+    if (direccion == "frente") return "frente.png"
+    else if (direccion == "izquierda") {
+      if (frameActual == 1) return "izquierda.png"
+      else if (frameActual == 2) return "caminaIzq1.png"
+      else return "correizq.png"
+    } else if (direccion == "derecha") return "derecha.png"
+    else if (direccion == "arriba") {
+      if (frameActual == 1) return "Sube1.png"
+      else if (frameActual == 2) return "Sube2.png"
+      else return "Sube3.png"
+    } else if (direccion == "abajo") {
+      if (frameActual == 1) return "Baja1.png"
+      else if (frameActual == 2) return "Baja2.png"
+      else return "Baja3.png"
+    } else return "frente.png"
+  }
+
+  method avanzarFrame() {
+    frameActual = frameActual + 1
+    if (frameActual > 3) frameActual = 1
+  }
+
+  method moverseHaciaArriba() {
+    direccion = "arriba"
+    const nuevaPos = position.up(1)
+    if (nuevaPos.y() >= 0 && nuevaPos.y() < game.height() && not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      sonidoCaminar.play()
+      self.avanzarFrame()
+      
+    }
+  }
+
+  method moverseHaciaAbajo() {
+    direccion = "abajo"
+    const nuevaPos = position.down(1)
+    if (nuevaPos.y() >= 0 && nuevaPos.y() < game.height() && not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  method moverseHaciaDerecha() {
+    direccion = "derecha"
+    const nuevaPos = position.right(1)
+    if (nuevaPos.x() >= 0 && nuevaPos.x() < game.width() && not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  method moverseHaciaIzquierda() {
+    direccion = "izquierda"
+    const nuevaPos = position.left(1)
+    if (nuevaPos.x() >= 0 && nuevaPos.x() < game.width() && not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+// con este metodo finalmente podemos rellenar las coordenadas que estan bloqueadas!!!
+
+  method agregarBloques() {
+    coordenadasBloqueadas.forEach({ par =>
+      const x = par.get(0)
+      const y = par.get(1)
+      const bloque = object {
+        var property position = game.at(x, y)
+        method image() { return "muro.png" } 
+      }
+      game.addVisual(bloque)
+    })
+  }
+}
