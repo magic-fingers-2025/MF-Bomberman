@@ -1,0 +1,162 @@
+import wollok.game.*
+
+program bomberman {
+
+  game.title("Bomberman UNaHur")
+  game.width(13)
+  game.height(11)
+  game.cellSize(50)
+  game.boardGround("fondoVacio.png")
+
+  // Agregamos personaje
+  game.addVisual(personaje)
+
+  // Generar muros irrompibles + rompibles
+  personaje.agregarMuros()
+
+  // Controles de movimiento
+  keyboard.w().onPressDo({ personaje.moverseHaciaArriba() })
+  keyboard.s().onPressDo({ personaje.moverseHaciaAbajo() })
+  keyboard.d().onPressDo({ personaje.moverseHaciaDerecha() })
+  keyboard.a().onPressDo({ personaje.moverseHaciaIzquierda() })
+
+  game.start()
+}
+
+object personaje {
+
+  var property position = game.at(1, 1)
+  var property direccion = "frente"
+  var property frameActual = 1
+  var sonidoCaminar = game.sound("player_run.mp3")
+
+  var coordenadasBloqueadas = [] // se llena dinámicamente
+
+  // =======================
+  // IMAGEN SEGÚN DIRECCIÓN
+  // =======================
+  method image() {
+    if (direccion == "frente") return "frente.png"
+    else if (direccion == "izquierda") {
+      if (frameActual == 1) return "izquierda.png"
+      else if (frameActual == 2) return "caminaIzq1.png"
+      else return "correizq.png"
+    }
+    else if (direccion == "derecha") return "derecha.png"
+    else if (direccion == "arriba") {
+      if (frameActual == 1) return "Sube1.png"
+      else if (frameActual == 2) return "Sube2.png"
+      else return "Sube3.png"
+    }
+    else if (direccion == "abajo") {
+      if (frameActual == 1) return "Baja1.png"
+      else if (frameActual == 2) return "Baja2.png"
+      else return "Baja3.png"
+    }
+    else return "frente.png"
+  }
+
+  // =======================
+  // ANIMACIÓN DE MOVIMIENTO
+  // =======================
+  method avanzarFrame() {
+    frameActual = frameActual + 1
+    if (frameActual > 3) frameActual = 1
+  }
+
+  // =======================
+  // MOVIMIENTOS
+  // =======================
+  method moverseHaciaArriba() {
+    direccion = "arriba"
+    const nuevaPos = position.up(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  method moverseHaciaAbajo() {
+    direccion = "abajo"
+    const nuevaPos = position.down(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  method moverseHaciaDerecha() {
+    direccion = "derecha"
+    const nuevaPos = position.right(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  method moverseHaciaIzquierda() {
+    direccion = "izquierda"
+    const nuevaPos = position.left(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  // =======================
+  // BLOQUEO DE MOVIMIENTOS
+  // =======================
+  method estaBloqueada(x, y) {
+    return coordenadasBloqueadas.any { par => par.get(0) == x and par.get(1) == y }
+  }
+
+  // =======================
+  // GENERACIÓN DE MUROS
+  // =======================
+  method agregarMuros() {
+
+    // Muros perimetrales + internos fijos
+    (0..game.width() - 1).forEach { x =>
+      (0..game.height() - 1).forEach { y =>
+        if (x == 0 or y == 0 or x == game.width() - 1 or y == game.height() - 1 or (x % 2 == 0 and y % 2 == 0)) {
+          const muro = object {
+            var property position = game.at(x, y)
+            method image() { return "muro.png" }
+          }
+          game.addVisual(muro)
+          coordenadasBloqueadas.add([x, y])
+        }
+      }
+    }
+
+    // Muros rompibles aleatorios
+/* faltaria definir posiciones para ponerlos fijos
+
+    (1..game.width() - 2).forEach { x =>
+      (1..game.height() - 2).forEach { y =>
+        if (not self.estaBloqueada(x, y) and not self.esZonaInicial(x, y) and random() < 0.25) {
+          const muroRompible = object {
+            var property position = game.at(x, y)
+            method image() { return "MuroRompibleInicial.png" }
+          }
+          game.addVisual(muroRompible)
+          coordenadasBloqueadas.add([x, y])
+        }
+      }
+    }
+    */
+  }
+
+  // =======================
+  // ZONA DE APARICIÓN SEGURA
+  // =======================
+  method esZonaInicial(x, y) {
+    return (x <= 2 and y <= 2)
+  }
+}
+
+
