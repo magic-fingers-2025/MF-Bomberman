@@ -4,23 +4,32 @@ program bomberman {
 
   game.title("Bomberman UNaHur")
   game.width(13)
-  game.height(11)
+  game.height(12)
   game.cellSize(50)
   game.boardGround("fondoVacio.png")
 
-  // Agregamos personaje
+  // =====================
+  // PERSONAJE PRINCIPAL
+  // =====================
   game.addVisual(personaje)
 
   // Generar muros irrompibles + rompibles
   personaje.agregarMuros()
 
-  // Controles de movimiento
+  // =====================
+  // INTERFAZ (vidas y puntaje)
+  // =====================
+  interfaz.mostrar()
+  interfaz.reiniciar()
+
+  // =====================
+  // CONTROLES DE MOVIMIENTO
+  // =====================
   keyboard.w().onPressDo({ personaje.moverseHaciaArriba() })
   keyboard.s().onPressDo({ personaje.moverseHaciaAbajo() })
   keyboard.d().onPressDo({ personaje.moverseHaciaDerecha() })
   keyboard.a().onPressDo({ personaje.moverseHaciaIzquierda() })
-  keyboard.space().onPressDo({ personaje.colocarBomba()
-  })
+  keyboard.space().onPressDo({ personaje.colocarBomba() })
 
   // =====================
   // RIVALES (enemigos)
@@ -33,29 +42,35 @@ program bomberman {
   rivales.forEach { rival =>
     game.addVisual(rival)
 
-    // Detección de colisión con jugador
+    // Colisión con el jugador → le quita vida
     game.onCollideDo(rival, { otro =>
       if (otro == personaje) {
         personaje.chocarCon(rival)
       }
     })
 
-    // Movimiento automático hacia el jugador
-    game.onTick((1.randomUpTo(5) * 500), "movimiento", {
-      rival.acercarseA(personaje)
+    // Movimiento automático cada 2 segundos
+    game.schedule(2000, {
+      rival.moverAleatorioSiLibre(personaje)
     })
   }
 
+  // =====================
+  // INICIO DEL JUEGO
+  // =====================
   game.start()
 }
 
+// ====================================================
+// PERSONAJE PRINCIPAL
+// ====================================================
+
 object personaje {
 
-  var property position = game.at(1, 1)
+  var property position = game.at(3, 2)
   var property direccion = "frente"
   var property frameActual = 1
   var sonidoCaminar = game.sound("player_run.mp3")
-
   var property coordenadasBloqueadas = [] // se llena dinámicamente
 
   // =======================
@@ -82,9 +97,6 @@ object personaje {
     else return "frente.png"
   }
 
-  // =======================
-  // ANIMACIÓN DE MOVIMIENTO
-  // =======================
   method avanzarFrame() {
     frameActual = frameActual + 1
     if (frameActual > 3) frameActual = 1
@@ -144,11 +156,9 @@ object personaje {
   // GENERACIÓN DE MUROS
   // =======================
   method agregarMuros() {
-
-    // Muros perimetrales + internos fijos
     (0..game.width() - 1).forEach { x =>
-      (0..game.height() - 1).forEach { y =>
-        if (x == 0 or y == 0 or x == game.width() - 1 or y == game.height() - 1 or (x % 2 == 0 and y % 2 == 0)) {
+      (1..game.height() - 1).forEach { y => // fila 0 reservada para HUD
+        if (x == 0 or y == 1 or x == game.width() - 1 or y == game.height() - 1 or (x % 2 == 0 and y % 2 == 0)) {
           const muro = object {
             var property position = game.at(x, y)
             method image() { return "muro.png" }
@@ -158,53 +168,28 @@ object personaje {
         }
       }
     }
-
-    // Muros rompibles aleatorios
-/* faltaria definir posiciones para ponerlos fijos
-
-    (1..game.width() - 2).forEach { x =>
-      (1..game.height() - 2).forEach { y =>
-        if (not self.estaBloqueada(x, y) and not self.esZonaInicial(x, y) and random() < 0.25) {
-          const muroRompible = object {
-            var property position = game.at(x, y)
-            method image() { return "MuroRompibleInicial.png" }
-          }
-          game.addVisual(muroRompible)
-          coordenadasBloqueadas.add([x, y])
-        }
-      }
-    }
-    */
   }
-
-  // =======================
-  // ZONA DE APARICIÓN SEGURA
-  // =======================
-  method esZonaInicial(x, y) {
-    return (x <= 2 and y <= 2)
-  }
-
 
   // =======================
   // COLISIÓN CON RIVAL
   // =======================
-  
-  // no anda !!! si lo ven que fallaria joya
   method chocarCon(rival) {
-    game.say(personaje,"¡Te atrapó el rival " + rival.numero() + "!")
+    game.say(personaje, "¡Te atrapó el rival " + rival.numero() + "!")
+    interfaz.perderUnaVida()
   }
 
-    // =======================
+  // =======================
   // COLOCAR BOMBA
   // =======================
-
-  /// hay que poner una bomba y que la bomba cambie su estado
-method colocarBomba() {
-  const bomba = new Bomba(posicion =self.position(), posicionesProhibidas = self.coordenadasBloqueadas())
-  game.addVisual(bomba)
+  method colocarBomba() {
+    const bomba = new Bomba(posicion = self.position(), posicionesProhibidas = self.coordenadasBloqueadas())
+    game.addVisual(bomba)
+  }
 }
 
-}
+// ====================================================
+// CLASES
+// ====================================================
 
 class Rival {
   // identificador opcional
@@ -215,6 +200,11 @@ class Rival {
   // sprite (solo una imagen disponible)
   method image() = "rival1.png"
 
+    method iniciarMovimientoAleatorio(personaje) {
+  game.schedule(2000, {
+    self.moverAleatorioSiLibre(personaje)
+  })
+}
   /*
     Movimiento simple y seguro:
     - elige aleatoriamente una de las 4 direcciones
@@ -235,6 +225,7 @@ class Rival {
     }
     // si está bloqueada: no hace nada (queda en su lugar)
   }
+
 
   // helper: mover hacia el jugador (si querés mantener una versión simple que no atraviese muros)
   method acercarseA(objetivo) {
@@ -259,10 +250,79 @@ class Rival {
 }
 
 
-class Bomba{
+class Bomba {
   const property posicion
   const property posicionesProhibidas
-  
-  method image()= "bombaInicial.png"
-  
+  method image() = "bombaInicial.png"
+}
+
+// ====================================================
+// INTERFAZ DE VIDAS Y PUNTAJE
+// ====================================================
+
+object interfaz {
+
+  var property vidasRestantes = 3
+  var property puntaje = 0
+
+  var vida1 = object {
+    method position() = game.at(1, 0)
+    method image() = "corazon.png"
   }
+  var vida2 = object {
+    method position() = game.at(2, 0)
+    method image() = "corazon.png"
+  }
+  var vida3 = object {
+    method position() = game.at(3, 0)
+    method image() = "corazon.png"
+  }
+
+  var marcador = object {
+    method position() = game.at(9, 0)
+    method draw(g) {
+      g.setColor("white")
+      g.drawText("Puntaje: " + interfaz.puntaje, 0, 0)
+    }
+  }
+
+  // --- Mostrar elementos ---
+  method mostrar() {
+    game.addVisual(vida1)
+    game.addVisual(vida2)
+    game.addVisual(vida3)
+    game.addVisual(marcador)
+  }
+
+  // --- Actualizar vidas visibles ---
+  method actualizar() {
+    game.removeVisual(vida1)
+    game.removeVisual(vida2)
+    game.removeVisual(vida3)
+    if (vidasRestantes >= 1) game.addVisual(vida1)
+    if (vidasRestantes >= 2) game.addVisual(vida2)
+    if (vidasRestantes >= 3) game.addVisual(vida3)
+  }
+
+  // --- Perder vida ---
+  method perderUnaVida() {
+    vidasRestantes = vidasRestantes - 1
+    self.actualizar()
+    if (vidasRestantes == 0) {
+      game.say(personaje, "💀 ¡Perdiste todas las vidas!")
+      game.stop()
+    }
+  }
+
+  // --- Sumar puntos ---
+  method sumarPuntos(cantidad) {
+    puntaje = puntaje + cantidad
+  }
+
+  // --- Reiniciar interfaz ---
+  method reiniciar() {
+    vidasRestantes = 3
+    puntaje = 0
+    self.actualizar()
+  }
+}
