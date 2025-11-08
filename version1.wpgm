@@ -19,6 +19,8 @@ program bomberman {
   keyboard.s().onPressDo({ personaje.moverseHaciaAbajo() })
   keyboard.d().onPressDo({ personaje.moverseHaciaDerecha() })
   keyboard.a().onPressDo({ personaje.moverseHaciaIzquierda() })
+  keyboard.space().onPressDo({ personaje.colocarBomba()
+  })
 
   // =====================
   // RIVALES (enemigos)
@@ -54,7 +56,7 @@ object personaje {
   var property frameActual = 1
   var sonidoCaminar = game.sound("player_run.mp3")
 
-  var coordenadasBloqueadas = [] // se llena dinámicamente
+  var property coordenadasBloqueadas = [] // se llena dinámicamente
 
   // =======================
   // IMAGEN SEGÚN DIRECCIÓN
@@ -186,30 +188,81 @@ object personaje {
   // =======================
   // COLISIÓN CON RIVAL
   // =======================
+  
+  // no anda !!! si lo ven que fallaria joya
   method chocarCon(rival) {
     game.say(personaje,"¡Te atrapó el rival " + rival.numero() + "!")
   }
+
+    // =======================
+  // COLOCAR BOMBA
+  // =======================
+
+  /// hay que poner una bomba y que la bomba cambie su estado
+method colocarBomba() {
+  const bomba = new Bomba(posicion =self.position(), posicionesProhibidas = self.coordenadasBloqueadas())
+  game.addVisual(bomba)
+}
+
 }
 
 class Rival {
+  // identificador opcional
   var property numero
+  // posición en el tablero (debe pasarse al crear la instancia)
   var property position
-  method image() { return "rival1.png" }
 
-  // Movimiento automático hacia el jugador
-  method acercarseA(objetivo) {
-    const posJugador = objetivo.position()
-    const dx = posJugador.x() - position.x()
-    const dy = posJugador.y() - position.y()
+  // sprite (solo una imagen disponible)
+  method image() = "rival1.png"
 
-    if (dx.abs() > dy.abs()) {
-      if (dx > 0) position = position.right(1)
-      else position = position.left(1)
-    } else {
-      if (dy > 0) position = position.down(1)
-      else position = position.up(1)
+  /*
+    Movimiento simple y seguro:
+    - elige aleatoriamente una de las 4 direcciones
+    - si la celda destino NO está bloqueada (usar personaje.estaBloqueada),
+      entonces actualiza su posición; si está bloqueada, no hace nada.
+  */
+  method moverAleatorioSiLibre(personaje) {
+    const direccion = [
+      position.up(1),
+      position.down(1),
+      position.left(1),
+      position.right(1)
+    ].anyOne() // elige una dirección al azar
+
+    // verifica con el objeto personaje si la celda está bloqueada
+    if (not personaje.estaBloqueada(direccion.x(), direccion.y())) {
+      position = direccion
     }
+    // si está bloqueada: no hace nada (queda en su lugar)
+  }
+
+  // helper: mover hacia el jugador (si querés mantener una versión simple que no atraviese muros)
+  method acercarseA(objetivo) {
+    // intentamos priorizar ejes por diferencia, pero siempre chequeando bloqueo mediante objetivo.estaBloqueada
+    const dx = objetivo.position().x() - position.x()
+    const dy = objetivo.position().y() - position.y()
+
+    // preferencia simple: mover en el eje con mayor diferencia; si está bloqueado, no intentar alternativas complejas
+    if (dx.abs() >= dy.abs()) {
+      const destino = if (dx > 0) position.right(1) else position.left(1)
+      if (not objetivo.estaBloqueada(destino.x(), destino.y())) {
+        position = destino
+      }
+    } else {
+      const destino = if (dy > 0) position.down(1) else position.up(1)
+      if (not objetivo.estaBloqueada(destino.x(), destino.y())) {
+        position = destino
+      }
+    }
+    // si el destino preferido está bloqueado, no hace nada (queda quieto)
   }
 }
 
 
+class Bomba{
+  const property posicion
+  const property posicionesProhibidas
+  
+  method image()= "bombaInicial.png"
+  
+  }
