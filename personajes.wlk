@@ -1,5 +1,6 @@
 import wollok.game.*
 import fondo.*
+import bomba.*
 
 
 object bomberman {
@@ -47,9 +48,24 @@ object bomberman {
     }
   }
 
+  
+  
+
+  method ponerBomba() {
+    const nuevaBomba = new Bomba(position = position)   
+    game.addVisual(nuevaBomba)
+    game.onCollideDo(nuevaBomba,{ personaje => 
+    personaje.morir()} )
+    nuevaBomba.iniciarCuentaRegresiva()
+        
+  }
+
+  
+
+  // polimorfismo para el onCollide de la bomba
+  method morir() {}
+
 }
-
-
 
 
 
@@ -88,21 +104,7 @@ class Enemigo{
   
   }
 
-  /*
-  method moverVertical() {
-  var direccionActual = "Arriba"
-
-  if (direccionActual == "Arriba") {
-    self.moverArribaSiSePuede()
-    }
-  else {
-    direccionActual = "Abajo"
-    self.moverAbajoSiSePuede()
-  }
-  
-  }
-  */
-
+ 
   method moverArribaSiSePuede() {
     const nuevaPos = position.up(1)
     
@@ -198,7 +200,7 @@ class LLamaAzul inherits Enemigo{
     }
     else{
       tick2.stop() 
-      image = "vanish.png"
+      game.removeVisual(self)
            
     }
   }

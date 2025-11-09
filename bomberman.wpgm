@@ -1,6 +1,7 @@
 import wollok.game.*
 import personajes.*
 import fondo.*
+import bomba.*
 
 
 program bombermanGame {
@@ -17,7 +18,7 @@ program bombermanGame {
   stageTheme.play()
   
   // fondo
-  //game.boardGround("pacmanBackground.jpg") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
+  game.boardGround("piso.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
 
     
   // ======== Borde del mapa ============
@@ -35,6 +36,8 @@ program bombermanGame {
 
   const esquinas = new MuroBorde(tipo = bloqueEsquina)
   esquinas.generarEsquinas()
+
+
   // ===================================
   
   // personaje principal
@@ -48,8 +51,8 @@ program bombermanGame {
   game.addVisual(enemigoB)
   enemigoB.iniciarMovimiento()
   
-  game.onCollideDo(bomberman,{ elemento => 
-  elemento.morir()} )
+  
+  
   
   keyboard.w().onPressDo{
     bomberman.subir()
@@ -64,6 +67,10 @@ program bombermanGame {
   keyboard.d().onPressDo{
     bomberman.derecha()
   }
+
+  keyboard.space().onPressDo({
+      bomberman.ponerBomba()
+  })
 
   // para que arranque el juego
   game.start()

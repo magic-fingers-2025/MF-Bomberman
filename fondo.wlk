@@ -52,6 +52,29 @@ class MuroBorde inherits Muro {
   
 }
 
+class PisoInterior inherits Muro {
+  
+  const alturas = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+  method rellenarInteriorAAltura(altura){
+    (1..game.width() - 2).forEach({ x =>
+      const muroAPoner = object {
+        const property position = game.at(x,altura)
+        var property image = "3x-interior-roca.png"
+      }
+      game.addVisual(muroAPoner)
+    }
+    ) 
+    
+  }
+  method rellenarInterior(){
+    alturas.forEach({h =>
+      self.rellenarInteriorAAltura(h)
+    })
+  }
+  
+}
+
+
 
 
 object bloqueSur {
