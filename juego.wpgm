@@ -7,7 +7,7 @@ import interfaz.*
 import teclado.*
 
 program bomberman {
-    game.title("Bomberman UNaHur")
+    game.title("MF-Bomberman")
     game.width(13)
     game.height(12)
     game.cellSize(50)
