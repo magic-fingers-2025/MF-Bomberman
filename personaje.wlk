@@ -160,5 +160,7 @@ object personaje {
           movido = true
         } }
     )
+
+    game.schedule(3000,{game.removeVisual(bomba)  self.coordenadasBloqueadas(posActual)} )
   }
 }

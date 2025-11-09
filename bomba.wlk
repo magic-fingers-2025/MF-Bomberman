@@ -47,7 +47,7 @@ class Bomba {
       self.expandirEnDireccion("derecha")
 
       // quitar el fuego central después de un tiempo
-      game.schedule(600, { game.removeVisual(centro) })
+      game.schedule(6000, { game.removeVisual(centro) })
     }
   }
 
