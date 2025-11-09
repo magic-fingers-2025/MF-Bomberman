@@ -7,6 +7,7 @@ program bomberman {
   game.height(12)
   game.cellSize(50)
   game.boardGround("fondoVacio.png")
+  game.sound("tntACDC.mp3")
 
   // =====================
   // PERSONAJE PRINCIPAL
@@ -66,7 +67,7 @@ program bomberman {
 // ====================================================
 
 object personaje {
-
+  
   var property position = game.at(3, 2)
   var property direccion = "frente"
   var property frameActual = 1
