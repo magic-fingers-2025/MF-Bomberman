@@ -7,7 +7,6 @@ program bomberman {
   game.height(12)
   game.cellSize(50)
   game.boardGround("fondoVacio.png")
-  game.sound("tntACDC.mp3")
 
   // =====================
   // PERSONAJE PRINCIPAL
@@ -50,10 +49,8 @@ program bomberman {
       }
     })
 
-    // Movimiento automático cada 2 segundos
-    game.schedule(2000, {
-      rival.moverAleatorioSiLibre(personaje)
-    })
+    // Movimiento automático continuo
+    rival.iniciarMovimientoAutomatico(personaje)
   }
 
   // =====================
@@ -67,7 +64,7 @@ program bomberman {
 // ====================================================
 
 object personaje {
-  
+
   var property position = game.at(3, 2)
   var property direccion = "frente"
   var property frameActual = 1
@@ -201,13 +198,14 @@ class Rival {
   // sprite (solo una imagen disponible)
   method image() = "rival1.png"
 
-    method iniciarMovimientoAleatorio(personaje) {
-  game.schedule(2000, {
+  method iniciarMovimientoAutomatico(personaje) {
+  const intervalo = (1.randomUpTo(3) * 300) // entre 300ms y 900ms
+  game.schedule(intervalo, {
     self.moverAleatorioSiLibre(personaje)
+    self.iniciarMovimientoAutomatico(personaje)
   })
 }
-  /*
-    Movimiento simple y seguro:
+  /*  Movimiento simple y seguro:
     - elige aleatoriamente una de las 4 direcciones
     - si la celda destino NO está bloqueada (usar personaje.estaBloqueada),
       entonces actualiza su posición; si está bloqueada, no hace nada.
