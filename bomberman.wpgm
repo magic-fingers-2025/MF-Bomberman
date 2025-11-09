@@ -1,0 +1,71 @@
+import wollok.game.*
+import personajes.*
+import fondo.*
+
+
+program bombermanGame {
+
+  const ancho = 35
+  const alto = 20
+  // límites del juego
+  game.width(ancho)
+  game.height(alto)
+  game.cellSize(48) // tamaño celda
+
+  const stageTheme = game.sound("stage-theme.wav")
+  //stageTheme.shouldLoop(true)
+  stageTheme.play()
+  
+  // fondo
+  //game.boardGround("pacmanBackground.jpg") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
+
+    
+  // ======== Borde del mapa ============
+  const bordeInferior = new MuroBorde(tipo = bloqueSur)
+  bordeInferior.concatenarMurosHorizontalesSegunTipo()
+
+  const bordeSuperior = new MuroBorde(tipo = bloqueNorte)
+  bordeSuperior.concatenarMurosHorizontalesSegunTipo()
+
+  const bordeOeste = new MuroBorde(tipo = bloqueOeste)
+  bordeOeste.concatenarMurosVerticaleslesSegunTipo()
+
+  const bordeEste = new MuroBorde(tipo = bloqueEste)
+  bordeEste.concatenarMurosVerticaleslesSegunTipo()
+
+  const esquinas = new MuroBorde(tipo = bloqueEsquina)
+  esquinas.generarEsquinas()
+  // ===================================
+  
+  // personaje principal
+  game.addVisualCharacter(bomberman) // este mensaje ya viene con la facultad de moverlo con las flechas. Podemos tener un solo visual character.
+
+  const enemigoA = new Enemigo(position = game.at(10,10), direccionActual = "Arriba")
+  game.addVisual(enemigoA)
+  enemigoA.iniciarMovimiento()
+
+  const enemigoB = new Enemigo(position = game.at(15,7), direccionActual = "Derecha")
+  game.addVisual(enemigoB)
+  enemigoB.iniciarMovimiento()
+  
+  
+  keyboard.w().onPressDo{
+    bomberman.subir()
+  }
+
+  keyboard.s().onPressDo{
+    bomberman.bajar()
+  }
+  keyboard.a().onPressDo{
+    bomberman.izquierda()
+  }
+  keyboard.d().onPressDo{
+    bomberman.derecha()
+  }
+
+  // para que arranque el juego
+  game.start()
+}
+
+
+
