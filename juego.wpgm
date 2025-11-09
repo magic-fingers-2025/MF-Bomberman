@@ -1,0 +1,40 @@
+import wollok.game.*
+import menu.*
+import personaje.*
+import rival.*
+import bomba.*
+import interfaz.*
+import teclado.*
+
+program bomberman {
+    game.title("Bomberman UNaHur")
+    game.width(13)
+    game.height(12)
+    game.cellSize(50)
+    game.boardGround("fondoVacio.png")
+
+    menu.iniciar()
+
+    // Iniciar juego con Enter
+    keyboard.enter().onPressDo({
+        game.removeVisual(menu)
+        game.addVisual(personaje)
+        personaje.agregarMuros()
+        interfaz.mostrar()
+        interfaz.reiniciar()
+
+        rivales.forEach { rival =>
+            game.addVisual(rival)
+            game.onCollideDo(rival, { otro => if (otro == personaje) personaje.chocarCon(rival) })
+            rival.iniciarMovimientoAutomatico(personaje)
+        }
+
+        keyboard.w().onPressDo({ personaje.moverseHaciaArriba() })
+        keyboard.s().onPressDo({ personaje.moverseHaciaAbajo() })
+        keyboard.a().onPressDo({ personaje.moverseHaciaIzquierda() })
+        keyboard.d().onPressDo({ personaje.moverseHaciaDerecha() })
+        keyboard.space().onPressDo({ personaje.colocarBomba() })
+    })
+
+    game.start()
+}
