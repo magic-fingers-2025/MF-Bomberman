@@ -180,7 +180,10 @@ object personaje {
   // COLOCAR BOMBA
   // =======================
   method colocarBomba() {
-    const bomba = new Bomba(posicion = self.position(), posicionesProhibidas = self.coordenadasBloqueadas())
+    const bomba = new Bomba(
+      posicion = self.position(), 
+      posicionesProhibidas = self.coordenadasBloqueadas()
+    )
     game.addVisual(bomba)
   }
 }
@@ -252,6 +255,8 @@ class Rival {
 class Bomba {
   const property posicion
   const property posicionesProhibidas
+  var property position = posicion
+
   method image() = "bombaInicial.png"
 }
 
