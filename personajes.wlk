@@ -58,12 +58,23 @@ class Enemigo{
   var property position
   var direccionActual = "Arriba"
   var indiceImagenActual = 0
+  var indiceAnimacionMuerte = 0
+  var property estaVivo = true
+  
+  method imagenes()
 
-  const imagenes= [
-    "3x-enemigo-A-1.png",
-    "3x-enemigo-A-3.png"
+  
+  const property animacionMuerteGeneral = [
+    "3x-death-general-1.png",
+    "3x-death-general-2.png",
+    "3x-death-general-3.png",
+    "3x-death-general-4.png",
+    "3x-death-general-5.png",
+    "3x-death-general-6.png",
+    "3x-death-general-7.png",
+    "3x-death-general-8.png"
   ]
-   
+    
 
   method iniciarMovimiento(){
     if (direccionActual == "Arriba"){
@@ -95,43 +106,48 @@ class Enemigo{
   method moverArribaSiSePuede() {
     const nuevaPos = position.up(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Arriba"){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Arriba" and estaVivo){
       position = nuevaPos
-      image = imagenes.get(indiceImagenActual)
-      indiceImagenActual = (indiceImagenActual + 1) % imagenes.size()
+      image = self.imagenes().get(indiceImagenActual)
+      indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
     }
-    else {
-      direccionActual = "Abajo"
-      self.moverAbajoSiSePuede()
-    }
+    else if (estaVivo){
+        direccionActual = "Abajo"
+        self.moverAbajoSiSePuede()
+      }
+    else{self.morir()}
   }
 
   method moverAbajoSiSePuede() {
     
     const nuevaPos = position.down(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Abajo"){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Abajo" and estaVivo){
       position = nuevaPos
-      image = imagenes.get(indiceImagenActual)
-      indiceImagenActual = (indiceImagenActual + 1) % imagenes.size()
+      image = self.imagenes().get(indiceImagenActual)
+      indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
     }
-    else {
+    else if (estaVivo) {      
       direccionActual = "Arriba"
       self.moverArribaSiSePuede()
-    }
+    }  
+    else{self.morir()}
+
   }
 
   method moverDerechaSiSePuede() {
     const nuevaPos = position.right(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Derecha"){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Derecha" and estaVivo){
       position = nuevaPos
-      image = imagenes.get(indiceImagenActual)
-      indiceImagenActual = (indiceImagenActual + 1) % imagenes.size()
+      image = self.imagenes().get(indiceImagenActual)
+      indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
     }
-    else {
+    else if (estaVivo){
       direccionActual = "Izquierda"
       self.moverIzquierdaSiSePuede()
     }
+    else{self.morir()}
+
   }
 
   method moverIzquierdaSiSePuede() {
@@ -139,12 +155,51 @@ class Enemigo{
     
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Izquierda"){
       position = nuevaPos
-      image = imagenes.get(indiceImagenActual)
-      indiceImagenActual = (indiceImagenActual + 1) % imagenes.size()
+      image = self.imagenes().get(indiceImagenActual)
+      indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
     }
-    else {
+    else if (estaVivo) {
       direccionActual = "Derecha"
       self.moverDerechaSiSePuede()
+    }
+    else {self.morir()}
+  }
+
+
+  method morir()
+
+}
+
+
+class LLamaAzul inherits Enemigo{
+  const imagenes= [
+    "3x-enemigo-A-1.png",
+    "3x-enemigo-A-3.png"
+  ]
+  
+  const animacionMuerte = [
+    "3x-death-A-1.png",
+    "3x-death-A-2.png"
+  ] + animacionMuerteGeneral
+
+
+  override method imagenes() = imagenes
+
+  const tick2 = game.tick(100, { self.cambiarImagen() }, false)
+  override method morir(){
+    estaVivo = false    
+    tick2.start()
+  }
+
+  method cambiarImagen(){
+    if (indiceAnimacionMuerte < animacionMuerte.size()){
+      image = animacionMuerte.get(indiceAnimacionMuerte)
+      indiceAnimacionMuerte = indiceAnimacionMuerte + 1
+    }
+    else{
+      tick2.stop() 
+      image = "vanish.png"
+           
     }
   }
 

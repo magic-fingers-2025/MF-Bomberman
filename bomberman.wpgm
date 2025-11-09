@@ -40,14 +40,16 @@ program bombermanGame {
   // personaje principal
   game.addVisualCharacter(bomberman) // este mensaje ya viene con la facultad de moverlo con las flechas. Podemos tener un solo visual character.
 
-  const enemigoA = new Enemigo(position = game.at(10,10), direccionActual = "Arriba")
+  const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
   game.addVisual(enemigoA)
   enemigoA.iniciarMovimiento()
 
-  const enemigoB = new Enemigo(position = game.at(15,7), direccionActual = "Derecha")
+  const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
   game.addVisual(enemigoB)
   enemigoB.iniciarMovimiento()
   
+  game.onCollideDo(bomberman,{ elemento => 
+  elemento.morir()} )
   
   keyboard.w().onPressDo{
     bomberman.subir()
