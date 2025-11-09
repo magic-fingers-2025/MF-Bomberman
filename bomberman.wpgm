@@ -1,0 +1,258 @@
+import wollok.game.*
+
+program bomberman {
+
+  game.title("Bomberman UNaHur")
+  game.width(13)
+  game.height(12)
+  game.cellSize(50)
+  game.boardGround("fondoVacio.png")
+
+  // =====================
+  // MENÚ INICIAL
+  // =====================
+  game.addVisual(menu)
+
+  // Presionar 1 para iniciar el juego
+  keyboard.num1().onPressDo({
+    game.removeVisual(menu)
+
+    // =====================
+    // ARRANCAR JUEGO
+    // =====================
+    game.addVisual(personaje)
+    personaje.agregarMuros()
+    interfaz.mostrar()
+    interfaz.reiniciar()
+
+    rivales.forEach { rival =>
+      game.addVisual(rival)
+      game.onCollideDo(rival, { otro =>
+        if (otro == personaje) personaje.chocarCon(rival)
+      })
+      rival.iniciarMovimientoAutomatico(personaje)
+    }
+
+    // Controles de movimiento
+    keyboard.w().onPressDo({ personaje.moverseHaciaArriba() })
+    keyboard.s().onPressDo({ personaje.moverseHaciaAbajo() })
+    keyboard.a().onPressDo({ personaje.moverseHaciaIzquierda() })
+    keyboard.d().onPressDo({ personaje.moverseHaciaDerecha() })
+    keyboard.space().onPressDo({ personaje.colocarBomba() })
+  })
+
+  game.start()
+}
+
+// =====================
+// MENÚ
+// =====================
+object menu {
+  method image() = "menu2.png"
+  method position() = game.origin()
+}
+
+// =====================
+// PERSONAJE PRINCIPAL
+// =====================
+object personaje {
+
+  var property position = game.at(3, 2)
+  var property direccion = "frente"
+  var property frameActual = 1
+  var sonidoCaminar = game.sound("player_run.mp3")
+  var property coordenadasBloqueadas = []
+
+  method image() {
+    if (direccion == "frente") return "frente.png"
+    else if (direccion == "izquierda") {
+      if (frameActual == 1) return "izquierda.png"
+      else if (frameActual == 2) return "caminaIzq1.png"
+      else return "correizq.png"
+    }
+    else if (direccion == "derecha") return "derecha.png"
+    else if (direccion == "arriba") {
+      if (frameActual == 1) return "Sube1.png"
+      else if (frameActual == 2) return "Sube2.png"
+      else return "Sube3.png"
+    }
+    else if (direccion == "abajo") {
+      if (frameActual == 1) return "Baja1.png"
+      else if (frameActual == 2) return "Baja2.png"
+      else return "Baja3.png"
+    }
+    else return "frente.png"
+  }
+
+  method avanzarFrame() {
+    frameActual = frameActual + 1
+    if (frameActual > 3) frameActual = 1
+  }
+
+  method moverseHaciaArriba() { 
+    direccion = "arriba"
+    const nuevaPos = position.up(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+  method moverseHaciaAbajo() { 
+    direccion = "abajo"
+    const nuevaPos = position.down(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+  method moverseHaciaDerecha() { 
+    direccion = "derecha"
+    const nuevaPos = position.right(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+  method moverseHaciaIzquierda() { 
+    direccion = "izquierda"
+    const nuevaPos = position.left(1)
+    if (not self.estaBloqueada(nuevaPos.x(), nuevaPos.y())) {
+      position = nuevaPos
+      self.avanzarFrame()
+      sonidoCaminar.play()
+    }
+  }
+
+  method estaBloqueada(x, y) {
+    return coordenadasBloqueadas.any { par => par.get(0) == x and par.get(1) == y }
+  }
+
+  method agregarMuros() {
+    (0..game.width()-1).forEach { x =>
+      (1..game.height()-1).forEach { y =>
+        if (x == 0 or y == 1 or x == game.width()-1 or y == game.height()-1 or (x % 2 == 0 and y % 2 == 0)) {
+          const muro = object {
+            var property position = game.at(x, y)
+            method image() { return "muro.png" }
+          }
+          game.addVisual(muro)
+          coordenadasBloqueadas.add([x, y])
+        }
+      }
+    }
+  }
+
+  method chocarCon(rival) {
+    game.say(personaje, "¡Te atrapó el rival " + rival.numero() + "!")
+    interfaz.perderUnaVida()
+  }
+
+  method colocarBomba() {
+    const bomba = new Bomba(
+      posicion = self.position(),
+      posicionesProhibidas = self.coordenadasBloqueadas()
+    )
+    game.addVisual(bomba)
+  }
+}
+
+// =====================
+// RIVALES
+// =====================
+class Rival {
+  var property numero
+  var property position
+  method image() = "rival1.png"
+
+  method iniciarMovimientoAutomatico(personaje) {
+    const intervalo = (1.randomUpTo(3) * 300)
+    game.schedule(intervalo, {
+      self.moverAleatorioSiLibre(personaje)
+      self.iniciarMovimientoAutomatico(personaje)
+    })
+  }
+
+  method moverAleatorioSiLibre(personaje) {
+    const direccion = [position.up(1), position.down(1), position.left(1), position.right(1)].anyOne()
+    if (not personaje.estaBloqueada(direccion.x(), direccion.y())) {
+      position = direccion
+    }
+  }
+}
+
+// =====================
+// BOMBA
+// =====================
+class Bomba {
+  const property posicion
+  const property posicionesProhibidas
+  var property position = posicion
+  method image() = "bombaInicial.png"
+}
+
+// =====================
+// INTERFAZ
+// =====================
+object interfaz {
+
+  var property vidasRestantes = 3
+  var property puntaje = 0
+
+  var vida1 = object { method position() = game.at(1, 0); method image() = "corazon.png" }
+  var vida2 = object { method position() = game.at(2, 0); method image() = "corazon.png" }
+  var vida3 = object { method position() = game.at(3, 0); method image() = "corazon.png" }
+
+  var marcador = object {
+    method position() = game.at(9, 0)
+    method draw(g) {
+      g.setColor("white")
+      g.drawText("Puntaje: " + interfaz.puntaje, 0, 0)
+    }
+  }
+
+  method mostrar() {
+    game.addVisual(vida1)
+    game.addVisual(vida2)
+    game.addVisual(vida3)
+    game.addVisual(marcador)
+  }
+
+  method actualizar() {
+    game.removeVisual(vida1)
+    game.removeVisual(vida2)
+    game.removeVisual(vida3)
+    if (vidasRestantes >= 1) game.addVisual(vida1)
+    if (vidasRestantes >= 2) game.addVisual(vida2)
+    if (vidasRestantes >= 3) game.addVisual(vida3)
+  }
+
+  method perderUnaVida() {
+    vidasRestantes = vidasRestantes - 1
+    self.actualizar()
+    if (vidasRestantes == 0) {
+      game.say(personaje, "💀 ¡Perdiste todas las vidas!")
+      game.stop()
+    }
+  }
+
+  method sumarPuntos(cantidad) {
+    puntaje = puntaje + cantidad
+  }
+
+  method reiniciar() {
+    vidasRestantes = 3
+    puntaje = 0
+    self.actualizar()
+  }
+}
+
+// =====================
+// RIVALES INICIALES
+// =====================
+const rivales = [
+  new Rival(numero = 1, position = game.at(11, 9)),
+  new Rival(numero = 2, position = game.at(9, 3))
+]
