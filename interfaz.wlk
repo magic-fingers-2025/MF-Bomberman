@@ -11,7 +11,7 @@ object interfaz {
     var vida3 = object { method position() = game.at(3, 0); method image() = "corazon.png" }
 
 
-// todavia no andan los puntos
+// todavia no andan los puntos porque no realizamos 
     var marcador = object {
         method position() = game.at(9, 0)
         method draw(g) {
@@ -49,6 +49,7 @@ object interfaz {
         puntaje = puntaje + cantidad
     }
 
+  
     method reiniciar() {
         vidasRestantes = 3
         puntaje = 0

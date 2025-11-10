@@ -12,7 +12,7 @@ object bomberman {
   method subir() {
     const nuevaPos = position.up(1)
     image = "3x-paso-der-espalda-bomberman.png"
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) ){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "3x-paso-der-espalda-bomberman.png"
@@ -21,7 +21,7 @@ object bomberman {
 
   method bajar() {
     const nuevaPos = position.down(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) ){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "3x-paso-der-frente-bomberman.png"
@@ -32,7 +32,7 @@ object bomberman {
   method izquierda() {
     const nuevaPos = position.left(1)
     image = "3x-paso-izq-frente-bomberman.png"
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) ){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "3x-paso-der-perfil-izquierdo-bomberman.png"
@@ -42,7 +42,7 @@ object bomberman {
   method derecha() {
     const nuevaPos = position.right(1)
     image = "3x-paso-der-frente-bomberman.png"
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) ){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "3x-paso-der-perfil-derecho-bomberman.png"
