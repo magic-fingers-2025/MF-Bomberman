@@ -3,7 +3,8 @@ import personajes.*
 import fondo.*
 import bomba.*
 import menu.*
-
+import interfaz.*
+import coordenadasBloqueadas.*
 
 program bombermanGame {
 
@@ -14,22 +15,14 @@ program bombermanGame {
   game.height(alto)
   game.cellSize(48) // tamaño celda
   menu.iniciar()
-  menu.mensajeInicio()
+  
 
   // Iniciar juego con Enter
   keyboard.enter().onPressDo({
     game.removeVisual(menu)
-  })
-
-  const stageTheme = game.sound("stage-theme.wav")
-  //stageTheme.shouldLoop(true)
-  stageTheme.play()
-  
-  // fondo
-  game.boardGround("piso.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
-
     
   // ======== Borde del mapa ============
+
   const bordeInferior = new MuroBorde(tipo = bloqueSur)
   bordeInferior.concatenarMurosHorizontalesSegunTipo()
 
@@ -45,6 +38,9 @@ program bombermanGame {
   const esquinas = new MuroBorde(tipo = bloqueEsquina)
   esquinas.generarEsquinas()
 
+  // ======== Muros internos ============
+  murosInternos.generar()
+
 
   // ===================================
   
@@ -57,11 +53,9 @@ program bombermanGame {
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
   game.addVisual(enemigoB)
+
   enemigoB.iniciarMovimiento()
-  
-  
-  
-  
+ 
   keyboard.w().onPressDo{
     bomberman.subir()
   }
@@ -80,6 +74,31 @@ program bombermanGame {
       bomberman.ponerBomba()
   })
 
+
+   // ======== Interfaz ========
+   // son las vidas representadas como corazones
+    interfaz.mostrar()
+    interfaz.reiniciar()
+
+    // ======== Colisiones ========
+    game.onCollideDo(bomberman, { otro =>
+      if (otro == enemigoA or otro == enemigoB or otro == explosion) {
+        interfaz.perderUnaVida()
+        bomberman.position(game.center())
+      }
+    })
+
+    
+  })
+
+  const stageTheme = game.sound("stage-theme.wav")
+  //stageTheme.shouldLoop(true)
+  stageTheme.play()
+  
+  // fondo
+  game.boardGround("piso.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
+
+   
   // para que arranque el juego
   game.start()
 }

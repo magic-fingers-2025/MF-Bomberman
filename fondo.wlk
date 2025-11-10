@@ -1,4 +1,5 @@
 import wollok.game.*
+import coordenadasBloqueadas.*
 
 
 class Muro {
@@ -166,6 +167,33 @@ object bloqueEsquina{
   
 
 }
+
+object murosInternos {
+
+  // Genera una estructura interna de rocas en posiciones alternadas (como en Bomberman clásico)
+  method generar() {
+    const ancho = game.width()
+    const alto = game.height()
+    
+    // Recorremos todas las coordenadas del tablero (excepto bordes)
+    (1..ancho - 2 ) .forEach { x =>
+      (1..alto - 2).forEach { y =>
+        // Creamos muro solo en coordenadas donde ambos (x,y) son pares -> patrón bomberman solo indestructibles pero de a cuatro para que cargue menos
+        if (x % 4 == 0 and y % 4 == 0 and x < ancho - 3 and y < alto - 3) {
+          const muro = object {
+            const property position = game.at(x, y)
+            var property image = "muro.png"
+          }
+
+          game.addVisual(muro)
+          coordenadasBloqueadas.agregarCoordenada([x, y])
+        }
+      }
+    }
+  }
+}
+
+
 
 object coordenadasBorde{
   const property coordenadas = #{[0,0], [1,0], [2,0], [3,0], [4,0], [5,0], [6,0], [7,0], [8,0], [9,0], [10,0], [11,0], [12,0], [13,0], [14,0], [15,0], [16,0], [17,0], [18,0], [19,0], [20,0], [21,0], [22,0], [23,0], [24,0], [25,0], [26,0], [27,0], [28,0], [29,0], [30,0], [31,0], [32,0], [33,0], [34,0], [34,1], [34,2], [34,3], [34,4], [34,5], [34,6], [34,7], [34,8], [34,9], [34,10], [34,11], [34,12], [34,13], [34,14], [34,15], [34,16], [34,17], [34,18], [34,19], [33,19], [32,19], [31,19], [30,19], [29,19], [28,19], [27,19], [26,19], [25,19], [24,19], [23,19], [22,19], [21,19], [20,19], [19,19], [18,19], [17,19], [16,19], [15,19], [14,19], [13,19], [12,19], [11,19], [10,19], [9,19], [8,19], [7,19], [6,19], [5,19], [4,19], [3,19], [2,19], [1,19], [0,19], [0,18], [0,17], [0,16], [0,15], [0,14], [0,13], [0,12], [0,11], [0,10], [0,9], [0,8], [0,7], [0,6], [0,5], [0,4], [0,3], [0,2], [0,1]}

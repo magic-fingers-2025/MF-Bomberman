@@ -1,7 +1,7 @@
 
 
 object menu {
-  const property image = "menu-escalado.png"
+  const property image = "fondoMF.png"
   method position() = game.origin()
   
   method iniciar() {
