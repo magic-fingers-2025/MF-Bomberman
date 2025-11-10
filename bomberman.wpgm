@@ -3,7 +3,7 @@ import personajes.*
 import fondo.*
 import bomba.*
 import menu.*
-
+import interfaz.*
 
 program bombermanGame {
 
@@ -19,8 +19,7 @@ program bombermanGame {
   // Iniciar juego con Enter
   keyboard.enter().onPressDo({
     game.removeVisual(menu)
-
-     
+    
   // ======== Borde del mapa ============
   const bordeInferior = new MuroBorde(tipo = bloqueSur)
   bordeInferior.concatenarMurosHorizontalesSegunTipo()
@@ -49,11 +48,9 @@ program bombermanGame {
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
   game.addVisual(enemigoB)
+
   enemigoB.iniciarMovimiento()
-  
-  
-  
-  
+ 
   keyboard.w().onPressDo{
     bomberman.subir()
   }
@@ -71,6 +68,17 @@ program bombermanGame {
   keyboard.space().onPressDo({
       bomberman.ponerBomba()
   })
+   // ======== Interfaz ========
+    interfaz.mostrar()
+    interfaz.reiniciar()
+
+    // ======== Colisiones ========
+    game.onCollideDo(bomberman, { otro =>
+      if (otro == enemigoA or otro == enemigoB or otro == explosion) {
+        interfaz.perderUnaVida()
+        bomberman.position(game.center())
+      }
+    })
 
     
   })
