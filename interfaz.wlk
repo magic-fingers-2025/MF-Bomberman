@@ -31,7 +31,7 @@ object interfaz {
 
   method perderUnaVida() {
     if (vidasRestantes > 0) {
-      game.removeVisual(vidas.filter{v => v.id() == vidasRestantes})
+      game.removeVisual(vidas.filter{v => v.id() == vidasRestantes}.first())
       vidasRestantes = vidasRestantes - 1
     }
     else{     
