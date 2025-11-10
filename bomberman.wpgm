@@ -19,7 +19,7 @@ program bombermanGame {
 
   // Iniciar juego con Enter
   keyboard.enter().onPressDo({
-    game.removeVisual(menu)
+    menu.cerrar()
     
   // ======== Borde del mapa ============
 
