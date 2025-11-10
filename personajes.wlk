@@ -1,3 +1,4 @@
+import coordenadasBloqueadas.*
 import wollok.game.*
 import fondo.*
 import bomba.*
@@ -108,7 +109,7 @@ class Enemigo{
   method moverArribaSiSePuede() {
     const nuevaPos = position.up(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Arriba" and estaVivo){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and coordenadasBloqueadas.estaBloqueada([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Arriba" and estaVivo){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
@@ -123,7 +124,7 @@ class Enemigo{
   method moverAbajoSiSePuede() {
     
     const nuevaPos = position.down(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Abajo" and estaVivo){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and coordenadasBloqueadas.estaBloqueada([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Abajo" and estaVivo){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
@@ -139,7 +140,7 @@ class Enemigo{
   method moverDerechaSiSePuede() {
     const nuevaPos = position.right(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Derecha" and estaVivo){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and coordenadasBloqueadas.estaBloqueada([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Derecha" and estaVivo){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
@@ -155,7 +156,7 @@ class Enemigo{
   method moverIzquierdaSiSePuede() {
     const nuevaPos = position.left(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Izquierda"){
+    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and coordenadasBloqueadas.estaBloqueada([nuevaPos.x(), nuevaPos.y()]) and direccionActual == "Izquierda"){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()

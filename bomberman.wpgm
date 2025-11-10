@@ -4,6 +4,7 @@ import fondo.*
 import bomba.*
 import menu.*
 import interfaz.*
+import coordenadasBloqueadas.*
 
 program bombermanGame {
 
@@ -21,6 +22,7 @@ program bombermanGame {
     game.removeVisual(menu)
     
   // ======== Borde del mapa ============
+
   const bordeInferior = new MuroBorde(tipo = bloqueSur)
   bordeInferior.concatenarMurosHorizontalesSegunTipo()
 
@@ -35,6 +37,9 @@ program bombermanGame {
 
   const esquinas = new MuroBorde(tipo = bloqueEsquina)
   esquinas.generarEsquinas()
+
+  // ======== Muros internos ============
+  murosInternos.generar()
 
 
   // ===================================
@@ -68,7 +73,10 @@ program bombermanGame {
   keyboard.space().onPressDo({
       bomberman.ponerBomba()
   })
+
+
    // ======== Interfaz ========
+   // son las vidas representadas como corazones
     interfaz.mostrar()
     interfaz.reiniciar()
 
