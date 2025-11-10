@@ -178,8 +178,8 @@ object murosInternos {
     // Recorremos todas las coordenadas del tablero (excepto bordes)
     (1..ancho - 2 ) .forEach { x =>
       (1..alto - 2).forEach { y =>
-        // Creamos muro solo en coordenadas donde ambos (x,y) son pares → patrón bomberman solo indestructibles
-        if (x % 2 == 0 and y % 2 == 0) {
+        // Creamos muro solo en coordenadas donde ambos (x,y) son pares -> patrón bomberman solo indestructibles pero de a cuatro para que cargue menos
+        if (x % 4 == 0 and y % 4 == 0 and x < ancho - 3 and y < alto - 3) {
           const muro = object {
             const property position = game.at(x, y)
             var property image = "muro.png"
