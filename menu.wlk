@@ -3,16 +3,16 @@ import wollok.game.*
 object menu {
   const property image = "fondoMF.png"
   method position() = game.origin()
-  const musicaInicio = game.sound("title-start.mp3")
+  
   
   method iniciar() {
     game.addVisual(self)
-    musicaInicio.play()
+    
   }
 
   method cerrar() {
     game.removeVisual(self)
-    musicaInicio.stop()
+    
   }
   const letrasInicio = [
     "x-C.png",

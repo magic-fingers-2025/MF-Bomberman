@@ -14,13 +14,17 @@ program bombermanGame {
   game.width(ancho)
   game.height(alto)
   game.cellSize(48) // tamaño celda
+  const musicaInicio = game.sound("title-start.mp3")
+  musicaInicio.play()
   menu.iniciar()
   
 
   // Iniciar juego con Enter
   keyboard.enter().onPressDo({
-    menu.cerrar()
-    
+  
+  menu.cerrar()
+  musicaInicio.stop()
+  
   // ======== Borde del mapa ============
 
   const bordeInferior = new MuroBorde(tipo = bloqueSur)
