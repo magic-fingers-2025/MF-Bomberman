@@ -2,7 +2,7 @@
   "name": "TPGameIntegrador",
   "version": "1.0.0",
   "resourceFolder": "assets",
-  "wollokVersion": "4.0.0",
-  "author": "hernan",
+  "wollokVersion": "1.0.2",
+  "author": "creador",
   "license": "ISC"
 }
