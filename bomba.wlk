@@ -35,6 +35,9 @@ class Bomba{
     }  
   }
 
+  // polimorfismo onCollide con ella misma
+  method morir(){}
+
 }
 
 object explosion{

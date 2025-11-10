@@ -2,6 +2,7 @@ import wollok.game.*
 import personajes.*
 import fondo.*
 import bomba.*
+import menu.*
 
 
 program bombermanGame {
@@ -12,6 +13,13 @@ program bombermanGame {
   game.width(ancho)
   game.height(alto)
   game.cellSize(48) // tamaño celda
+  menu.iniciar()
+  menu.mensajeInicio()
+
+  // Iniciar juego con Enter
+  keyboard.enter().onPressDo({
+    game.removeVisual(menu)
+  })
 
   const stageTheme = game.sound("stage-theme.wav")
   //stageTheme.shouldLoop(true)
