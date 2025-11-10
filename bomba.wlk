@@ -31,9 +31,11 @@ class Bomba{
     else{
       tick3.stop()
       //exploto = true 
-      game.removeVisual(self)          
+      game.removeVisual(self)
+      explosion.explotar(self)    
+            
     }  
-  }
+  } 
 
   // polimorfismo onCollide con ella misma
   method morir(){}
@@ -52,8 +54,13 @@ object explosion{
   const direcciones = ["Arriba","Abajo","Izquierda","Derecha"]
 
   method explotar(unaBomba){
-    if (unaBomba.exploto() == true){
-      direcciones.forEach({d => self.propagarseHacia(d)})
+      unaBomba.exploto(true)
+    if (unaBomba.exploto()){
+       const anim = new ExplosionSimple(position = unaBomba.position())
+       game.addVisual(anim)
+      game.tick(1000, {
+      game.removeVisual(anim)
+    }, false).start()
     }  
   }
 
@@ -64,3 +71,11 @@ object explosion{
 
 
 
+class ExplosionSimple {
+  var property position
+  var property image = "3x-explocion-centro-5.png"
+
+  method initialize(posicion) {
+    position = posicion
+  }
+}
