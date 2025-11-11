@@ -26,7 +26,7 @@ program bombermanGame {
   musicaInicio.stop()
   
   // ======== Borde del mapa ============
-
+  /*
   const bordeInferior = new MuroBorde(tipo = bloqueSur)
   bordeInferior.concatenarMurosHorizontalesSegunTipo()
 
@@ -41,7 +41,7 @@ program bombermanGame {
 
   const esquinas = new MuroBorde(tipo = bloqueEsquina)
   esquinas.generarEsquinas()
-
+  */
   // ======== Muros internos ============
   murosInternos.generar()
 
@@ -52,13 +52,13 @@ program bombermanGame {
   game.addVisualCharacter(bomberman) // este mensaje ya viene con la facultad de moverlo con las flechas. Podemos tener un solo visual character.
 
   const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  game.addVisual(enemigoA)
-  enemigoA.iniciarMovimiento()
+  //game.addVisual(enemigoA)
+  //enemigoA.iniciarMovimiento()
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-  game.addVisual(enemigoB)
+  //game.addVisual(enemigoB)
 
-  enemigoB.iniciarMovimiento()
+  //enemigoB.iniciarMovimiento()
  
   keyboard.w().onPressDo{
     bomberman.subir()
@@ -73,9 +73,15 @@ program bombermanGame {
   keyboard.d().onPressDo{
     bomberman.derecha()
   }
+  keyboard.up().onPressDo({ bomberman.subir() })
+  keyboard.down().onPressDo({ bomberman.bajar() })
+  keyboard.left().onPressDo({ bomberman.izquierda() })
+  keyboard.right().onPressDo({ bomberman.derecha() })
+
+
 
   keyboard.space().onPressDo({
-      bomberman.ponerBomba()
+      bomberman.ponerBombaConExplosion()
   })
 
 

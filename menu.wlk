@@ -14,6 +14,8 @@ object menu {
     game.removeVisual(self)
     
   }
+
+  
   const letrasInicio = [
     "x-C.png",
     "x-0.png",
