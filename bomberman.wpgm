@@ -8,7 +8,7 @@ import coordenadasBloqueadas.*
 
 program bombermanGame {
 
-  const ancho = 35
+  const ancho = 22
   const alto = 20
   // límites del juego
   game.width(ancho)
@@ -52,7 +52,7 @@ program bombermanGame {
   game.addVisualCharacter(bomberman) // este mensaje ya viene con la facultad de moverlo con las flechas. Podemos tener un solo visual character.
 
   const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  //game.addVisual(enemigoA)
+  game.addVisual(enemigoA)
   //enemigoA.iniciarMovimiento()
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
@@ -106,7 +106,8 @@ program bombermanGame {
   stageTheme.play()
   
   // fondo
-  game.boardGround("piso.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
+  //game.boardGround("piso2.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
+
 
    
   // para que arranque el juego
