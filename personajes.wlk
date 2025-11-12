@@ -57,8 +57,9 @@ object bomberman {
     game.addVisual(nuevaBomba)
     game.onCollideDo(nuevaBomba,{ personaje => 
     personaje.morir()} )
-    nuevaBomba.explotar()
+    
     nuevaBomba.iniciarCuentaRegresiva()
+    nuevaBomba.explotar()
     
         
   }
