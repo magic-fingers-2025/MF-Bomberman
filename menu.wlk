@@ -1,12 +1,21 @@
 
-
+import wollok.game.*
 object menu {
   const property image = "fondoMF.png"
   method position() = game.origin()
   
+  
   method iniciar() {
     game.addVisual(self)
+    
   }
+
+  method cerrar() {
+    game.removeVisual(self)
+    
+  }
+
+  
   const letrasInicio = [
     "x-C.png",
     "x-0.png",

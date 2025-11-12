@@ -1,12 +1,11 @@
+//import wollok.game.*
+
 class Bomba{
   var property image = "3x-bomba-1.png"
   var property position
   var indiceAnimacionBomba = 0
 
-  var property exploto = false
-
-
-  const animacionBomba = [
+    const animacionBomba = [
     "3x-bomba-1.png",
     "3x-bomba-2.png",
     "3x-bomba-3.png",
@@ -32,7 +31,7 @@ class Bomba{
       tick3.stop()
       //exploto = true 
       game.removeVisual(self)
-      explosion.explotar(self)    
+      //explosion.explotar(self)    
             
     }  
   } 
@@ -40,42 +39,48 @@ class Bomba{
   // polimorfismo onCollide con ella misma
   method morir(){}
 
-}
-
-object explosion{
-  const explosion = [
-    "explosion-1.png",
-    "explosion-2.png",
-    "explosion-3.png",
-    "explosion-4.png",
-    "explosion-5.png"
-  ]
-
-  const direcciones = ["Arriba","Abajo","Izquierda","Derecha"]
-
-  method explotar(unaBomba){
-      unaBomba.exploto(true)
-    if (unaBomba.exploto()){
-       const anim = new ExplosionSimple(position = unaBomba.position())
-       game.addVisual(anim)
-      game.tick(1000, {
-      game.removeVisual(anim)
-    }, false).start()
-    }  
+  const explosionVerticalMedio = object {
+    const property image = "3x-explosion-vertical-medio-1.png"
+    var property position = game.at(7,4)
   }
 
-  method propagarseHacia(direccion){
+
+
+  const explosionVerticalArriba = object {
+    const property image = "3x-explosion-vertical-arriba-1.png"
+    var property position = game.at(5,5)
+} 
+
+  method explotar(){
+    game.addVisual(explosionVerticalMedio)
+    game.addVisual(explosionVerticalArriba)
     
   }
+
 }
 
 
 
-class ExplosionSimple {
-  var property position
-  var property image = "3x-explocion-centro-5.png"
 
-  method initialize(posicion) {
-    position = posicion
+/*
+object explosion{
+  var property position = game.origin()
+  
+  
+
+  method propagarseHaciaArriba(){
+    //explosionVerticalMedio.position(position.y()+1)
+    //explosionVerticalArriba.position(position.y()+2)
+    game.addVisual(explosionVerticalMedio)
+    game.addVisual(explosionVerticalArriba)
+    //game.schedule(1000, {game.removeVisual(explosionVerticalArriba) } )
+    //game.schedule(1000, {game.removeVisual(explosionVerticalMedio) } )
   }
+  
+  
 }
+*/
+
+
+
+

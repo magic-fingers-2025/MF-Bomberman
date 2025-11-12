@@ -1,14 +1,14 @@
 import wollok.game.*
-
+import bomberman.*
+import menu.*
 
 
 object interfaz {
     var property vidasRestantes = 3
     var property puntaje = 0
+    var nivel = 1
 
-    var vida1 = object { method position() = game.at(1, 0); method image() = "corazon.png" }
-    var vida2 = object { method position() = game.at(2, 0); method image() = "corazon.png" }
-    var vida3 = object { method position() = game.at(3, 0); method image() = "corazon.png" }
+    const vidas = self.iniciarVidas()
 
 
 // todavia no andan los puntos porque no realizamos 
@@ -21,43 +21,68 @@ object interfaz {
     }
 
     method mostrar() {
-        game.addVisual(vida1)
-        game.addVisual(vida2)
-        game.addVisual(vida3)
-        game.addVisual(marcador)
+        game.addVisual(vidas.get(0))
+        game.addVisual(vidas.get(1))
+        game.addVisual(vidas.get(2))
     }
 
-    method actualizar() {
-        game.removeVisual(vida1)
-        game.removeVisual(vida2)
-        game.removeVisual(vida3)
-        if (vidasRestantes >= 1) game.addVisual(vida1)
-        if (vidasRestantes >= 2) game.addVisual(vida2)
-        if (vidasRestantes >= 3) game.addVisual(vida3)
+  method perderUnaVida() {
+    if (vidasRestantes > 1) {
+      game.removeVisual(vidas.filter{v => v.id() == vidasRestantes}.first())
+      vidasRestantes = vidasRestantes - 1
     }
+    else{     
+      game.addVisual(gameOverPantalla)
+      game.schedule(3000, {self.reiniciar()})
+    }
+  }
 
-    method perderUnaVida() {
-        vidasRestantes = vidasRestantes - 1
-        self.actualizar()
-        if (vidasRestantes == 0) {
-            game.stop()
-            game.addVisual(gameOverPantalla) 
-        }
-    }
+  method sumarPuntos(cantidad) {
+      puntaje = puntaje + cantidad
+  }
 
-    method sumarPuntos(cantidad) {
-        puntaje = puntaje + cantidad
-    }
+
+  method reiniciar() {
+
+      game.removeVisual("piso.png")
+      game.removeVisual(gameOverPantalla)
+      self.vidasRestantes(3)
+      self.actualizar()
+      self.puntaje(0)
+      menu.iniciar()
+      
+  }
+
+  method cambiarNivel(){
+
+    // si no hay rivales en pantalla, pasar al siguiente
+      nivel = 2
+
+  }
 
   
-    method reiniciar() {
-        vidasRestantes = 3
-        puntaje = 0
-        self.actualizar()
+  const gameOverPantalla = object {
+      method image() = "gameOver2.png"
+      method position() = game.at(0.4, 0.4)
+      method sonido() = "gameOver.mpeg"
+  }
+
+  method iniciarVidas(){
+    var vida1 = object { method position() = game.at(1, 0); method image() = "corazon.png" ; method id() = 1}
+    var vida2 = object { method position() = game.at(2, 0); method image() = "corazon.png" ; method id() = 2}
+    var vida3 = object { method position() = game.at(3, 0); method image() = "corazon.png" ; method id() = 3}
+
+    return [vida1, vida2, vida3]
+    
+  }
+
+   method actualizar() {
+        game.removeVisual(vidas.get(0))
+        game.removeVisual(vidas.get(1))
+        game.removeVisual(vidas.get(2))
+        self.mostrar() // ESTO
     }
-        const gameOverPantalla = object {
-            method image() = "gameOver2.png"
-            method position() = game.at(0.4, 0.4)
-            method sonido() = "gameOver.mpeg" 
-    }
-}
+
+  }
+
+  

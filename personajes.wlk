@@ -52,12 +52,15 @@ object bomberman {
   
   
 
-  method ponerBomba() {
+  method ponerBombaConExplosion() {
     const nuevaBomba = new Bomba(position = position)   
     game.addVisual(nuevaBomba)
     game.onCollideDo(nuevaBomba,{ personaje => 
     personaje.morir()} )
+    
     nuevaBomba.iniciarCuentaRegresiva()
+    nuevaBomba.explotar()
+    
         
   }
 
