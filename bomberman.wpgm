@@ -27,8 +27,7 @@ program bombermanGame {
   
   // Mostrar fondo según nivel actual
   menu.mostrarMapaSegunNivel(interfaz.nivel())
-  menu
- 
+  
 
   // cargar coordenadas de borde y mapa 1
   //coordenadasBloqueadas.nivel1()
