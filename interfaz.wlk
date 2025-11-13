@@ -62,9 +62,10 @@ object interfaz {
 
   
   const gameOverPantalla = object {
-      method image() = "gameOver2.png"
+      method image() = "game-over.png"
       method position() = game.at(0.4, 0.4)
       method sonido() = "gameOver.mpeg"
+      
   }
 
   method iniciarVidas(){
