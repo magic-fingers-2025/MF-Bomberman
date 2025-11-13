@@ -62,24 +62,24 @@ class Bomba{
 
 
 
-/*
+
 object explosion{
   var property position = game.origin()
   
-  
+  method image() = "" 
 
   method propagarseHaciaArriba(){
     //explosionVerticalMedio.position(position.y()+1)
     //explosionVerticalArriba.position(position.y()+2)
-    game.addVisual(explosionVerticalMedio)
-    game.addVisual(explosionVerticalArriba)
+    //game.addVisual(explosionVerticalMedio)
+    //game.addVisual(explosionVerticalArriba)
     //game.schedule(1000, {game.removeVisual(explosionVerticalArriba) } )
     //game.schedule(1000, {game.removeVisual(explosionVerticalMedio) } )
   }
   
   
 }
-*/
+
 
 
 
