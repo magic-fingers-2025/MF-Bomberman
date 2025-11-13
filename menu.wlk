@@ -16,9 +16,9 @@ object menu {
    method mostrarMapaSegunNivel(nivel) {
     // Quitar mapas previos
     // hay que ver que no de error al ejecutar
-    /*game.removeVisual(fondoNivel1)
+    game.removeVisual(fondoNivel1)
     game.removeVisual(fondoNivel2)
-*/
+
     if(nivel == 1) game.addVisual(fondoNivel1)
     else game.addVisual(fondoNivel2)
   }

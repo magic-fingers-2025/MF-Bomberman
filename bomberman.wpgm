@@ -13,7 +13,7 @@ program bombermanGame {
   // límites del juego
   game.width(ancho)
   game.height(alto)
-  game.cellSize(48) // tamaño celda
+  game.cellSize(48) // tamaño celda 48
   const musicaInicio = game.sound("title-start.mp3")
   musicaInicio.play()
   menu.iniciar()
@@ -27,12 +27,13 @@ program bombermanGame {
   
   // Mostrar fondo según nivel actual
   menu.mostrarMapaSegunNivel(interfaz.nivel())
+  menu
  
 
   // cargar coordenadas de borde y mapa 1
-  coordenadasBloqueadas.nivel1()
+  //coordenadasBloqueadas.nivel1()
   coordenadasBloqueadas.bordes()
-
+  coordenadasBloqueadas.nivel2()
   //
   // ======== Borde del mapa ============
   /*

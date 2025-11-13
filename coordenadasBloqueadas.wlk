@@ -58,6 +58,11 @@ object coordenadasBloqueadas {
   }
 
   method nivel2(){
-    
+
+    self.nivel1()
+
+    const listaNivel2 = #{[4,4], [17,4] , [9,5], [14,8] , [14,11], [7,11]}
+
+    self.agregarCoordenadas(listaNivel2)
   }
 }
