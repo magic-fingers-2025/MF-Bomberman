@@ -32,7 +32,7 @@ program bombermanGame {
   // cargar coordenadas de borde y mapa 1
   //coordenadasBloqueadas.nivel1()
   coordenadasBloqueadas.bordes()
-  coordenadasBloqueadas.nivel2()
+  coordenadasBloqueadas.nivel1()
   //
   // ======== Borde del mapa ============
   /*

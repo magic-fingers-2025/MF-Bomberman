@@ -6,7 +6,7 @@ import menu.*
 object interfaz {
     var property vidasRestantes = 3
     var property puntaje = 0
-    var property nivel = 2
+    var property nivel = 1
 
     const vidas = self.iniciarVidas()
 
