@@ -7,6 +7,8 @@ object visualManager{
     const visualesPuestas =[]
     const listaDeEnemigos = []
 
+}
+/*
     //para agregar a la lista
     method agregarVisualALista(unaVisual){
       visualesPuestas.add(unaVisual)
@@ -150,4 +152,4 @@ object visualManager{
   }
 
 
-}
+}*/
