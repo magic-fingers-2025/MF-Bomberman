@@ -1,4 +1,4 @@
-import MF-Bomberman.interfaz.*
+import interfaz.*
 import coordenadasBloqueadas.*
 import wollok.game.*
 import fondo.*

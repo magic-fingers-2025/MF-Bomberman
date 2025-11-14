@@ -1,4 +1,4 @@
-import MF-Bomberman.coordenadasBloqueadas.coordenadasBloqueadas
+import coordenadasBloqueadas.*
 //import wollok.game.*
 
 class Bomba{
