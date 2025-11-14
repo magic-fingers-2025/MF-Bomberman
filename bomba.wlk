@@ -90,6 +90,9 @@ object controladorDeExplosiones {
 
     game.addVisual(parte)
 
+    // matar al que toca
+    game.onCollideDo(parte, { otro => otro.morir()})
+
     // remover en 3 segundos o lo que quieran
     game.schedule(3000, {
       game.removeVisual(parte)
