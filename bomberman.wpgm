@@ -13,7 +13,7 @@ program bombermanGame {
   // límites del juego
   game.width(ancho)
   game.height(alto)
-  game.cellSize(48) // tamaño celda
+  game.cellSize(48) // tamaño celda 48
   const musicaInicio = game.sound("title-start.mp3")
   musicaInicio.play()
   menu.iniciar()
@@ -25,6 +25,15 @@ program bombermanGame {
   menu.cerrar()
   musicaInicio.stop()
   
+  // Mostrar fondo según nivel actual
+  menu.mostrarMapaSegunNivel(interfaz.nivel())
+  
+
+  // cargar coordenadas de borde y mapa 1
+  //coordenadasBloqueadas.nivel1()
+  coordenadasBloqueadas.bordes()
+  coordenadasBloqueadas.nivel1()
+  //
   // ======== Borde del mapa ============
   /*
   const bordeInferior = new MuroBorde(tipo = bloqueSur)
@@ -43,7 +52,7 @@ program bombermanGame {
   esquinas.generarEsquinas()
   */
   // ======== Muros internos ============
-  murosInternos.generar()
+  //murosInternos.generar()
 
 
   // ===================================
@@ -53,7 +62,7 @@ program bombermanGame {
   game.addVisual(bomberman) 
 
   const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  game.addVisual(enemigoA)
+  //game.addVisual(enemigoA)
   //enemigoA.iniciarMovimiento()
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
@@ -92,8 +101,6 @@ program bombermanGame {
         bomberman.position(game.center())
       }
     })
-
-    
   })
 
   const stageTheme = game.sound("stage-theme.wav")
@@ -103,8 +110,6 @@ program bombermanGame {
   // fondo
   //game.boardGround("piso2.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
 
-
-   
   // para que arranque el juego
   game.start()
 }

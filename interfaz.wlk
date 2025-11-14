@@ -6,7 +6,7 @@ import menu.*
 object interfaz {
     var property vidasRestantes = 3
     var property puntaje = 0
-    var nivel = 1
+    var property nivel = 1
 
     const vidas = self.iniciarVidas()
 
@@ -44,7 +44,7 @@ object interfaz {
 
   method reiniciar() {
 
-      game.removeVisual("piso.png")
+      game.removeVisual("menoscargado-map1.png")
       game.removeVisual(gameOverPantalla)
       self.vidasRestantes(3)
       self.actualizar()
@@ -55,8 +55,8 @@ object interfaz {
 
   method cambiarNivel(){
 
-    // si no hay rivales en pantalla, pasar al siguiente
-      nivel = 2
+    // si no hay rivales en pantalla, pasar al siguiente- Hacemos que se cambie del 1 al 2 y asi
+      if (nivel == 1) nivel = 2 else nivel = 1
 
   }
 
@@ -85,5 +85,4 @@ object interfaz {
     }
 
   }
-
   

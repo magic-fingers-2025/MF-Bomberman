@@ -1,3 +1,4 @@
+import MF-Bomberman.interfaz.*
 import coordenadasBloqueadas.*
 import wollok.game.*
 import fondo.*
@@ -55,8 +56,6 @@ object bomberman {
   method ponerBombaConExplosion() {
     const nuevaBomba = new Bomba(position = position)   
     game.addVisual(nuevaBomba)
-    game.onCollideDo(nuevaBomba,{ personaje => 
-    personaje.morir()} )
     
     nuevaBomba.iniciarCuentaRegresiva()
     nuevaBomba.explotar()
@@ -67,7 +66,9 @@ object bomberman {
   
 
   // polimorfismo para el onCollide de la bomba
-  method morir() {}
+  method morir() {
+     interfaz.perderUnaVida()
+  }
 
 }
 
