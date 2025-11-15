@@ -42,30 +42,9 @@ class Bomba{
 
   // polimorfismo onCollide con ella misma
   method morir(){}
-/*
-  const explosionVerticalMedio = object {
-    const property image = "3x-explosion-vertical-medio-1.png"
-    var property position = game.at(7,4)
-  }
 
-
-
-  const explosionVerticalArriba = object {
-    const property image = "3x-explosion-vertical-arriba-1.png"
-    var property position = game.at(5,5)
-} 
-
-  method explotar(){
-    game.addVisual(explosionVerticalMedio)
-    game.addVisual(explosionVerticalArriba)
-    
-  }
-*/
 }
 
-object explosion {
-  
-}
 object controladorDeExplosiones {
 
   method crearExplosion(posicionBomba) {
@@ -165,7 +144,6 @@ object controladorDeExplosiones {
       }
     }
   }
-
 
 }
 

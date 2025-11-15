@@ -120,14 +120,18 @@ object visualManager{
 
     const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
     game.addVisual(enemigoA)enemigoA
+    game.onCollideDo(enemigoA, { otro => otro.morir()})
+
     self.agregarVisualALista(enemigoA)
     self.agregarEnemigoALista(enemigoA)
     //enemigoA.iniciarMovimiento()
 
     const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
     //game.addVisual(enemigoB)
-    self.agregarVisualALista(enemigoA)
+    self.agregarVisualALista(enemigoB)
     self.agregarEnemigoALista(enemigoB)
+
+    game.onCollideDo(enemigoB, { otro => otro.morir()})
     //enemigoB.iniciarMovimiento()
     
     interfaz.mostrar()

@@ -17,7 +17,7 @@ program bombermanGame {
   const musicaInicio = game.sound("title-start.mp3")
   musicaInicio.play()
   menu.iniciar()
-  
+
 
   // Iniciar juego con Enter
   keyboard.enter().onPressDo({
@@ -96,12 +96,13 @@ program bombermanGame {
 
     // ======== Colisiones ========
     game.onCollideDo(bomberman, { otro =>
-      if (otro == enemigoA or otro == enemigoB or otro == explosion) {
-        interfaz.perderUnaVida()
-        bomberman.position(game.center())
+      if (otro == enemigoA or otro == enemigoB) {
+       // interfaz.perderUnaVida()
+      //bomberman.position(game.center())
       }
     })
-  })
+
+     })
 
   const stageTheme = game.sound("stage-theme.wav")
   //stageTheme.shouldLoop(true)
@@ -111,6 +112,7 @@ program bombermanGame {
   //game.boardGround("piso2.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
 
   // para que arranque el juego
+  
   game.start()
 }
 
