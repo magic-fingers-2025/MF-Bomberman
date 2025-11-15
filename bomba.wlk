@@ -1,3 +1,4 @@
+import visualManager.*
 import coordenadasBloqueadas.*
 //import wollok.game.*
 
@@ -69,11 +70,14 @@ object controladorDeExplosiones {
 
     game.addVisual(parte)
 
-    // matar al que toca
-    game.onCollideDo(parte, { otro => otro.morir()})
+    // matar al que toca hay que agregar moriri a todo
+    game.onCollideDo(parte, { otro => otro.morir()
+                              visualManager.evaluarSiPasaDeNivel()
+                              visualManager.evaluarSiGanaste()
+                             })
 
     // remover en 3 segundos o lo que quieran
-    game.schedule(3000, {
+      game.schedule(3000, {
       game.removeVisual(parte)
     })
   }

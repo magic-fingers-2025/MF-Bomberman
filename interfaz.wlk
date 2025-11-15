@@ -5,20 +5,9 @@ import menu.*
 
 object interfaz {
     var property vidasRestantes = 3
-    var property puntaje = 0
     var property nivel = 1
 
     const vidas = self.iniciarVidas()
-
-
-// todavia no andan los puntos porque no realizamos 
-    var marcador = object {
-        method position() = game.at(9, 0)
-        method draw(g) {
-            g.setColor("white")
-            g.drawText("Puntaje: " + interfaz.puntaje, 0, 0)
-        }
-    }
 
     method mostrar() {
         game.addVisual(vidas.get(0))
@@ -37,18 +26,12 @@ object interfaz {
     }
   }
 
-  method sumarPuntos(cantidad) {
-      puntaje = puntaje + cantidad
-  }
-
-
   method reiniciar() {
 
       game.removeVisual("menoscargado-map1.png")
       game.removeVisual(gameOverPantalla)
       self.vidasRestantes(3)
       self.actualizar()
-      self.puntaje(0)
       menu.iniciar()
       
   }

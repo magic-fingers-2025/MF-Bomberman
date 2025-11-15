@@ -5,6 +5,7 @@ import bomba.*
 import menu.*
 import interfaz.*
 import coordenadasBloqueadas.*
+import visualManager.*
 
 program bombermanGame {
 
@@ -16,93 +17,11 @@ program bombermanGame {
   game.cellSize(48) // tamaño celda 48
   const musicaInicio = game.sound("title-start.mp3")
   musicaInicio.play()
-  menu.iniciar()
-
-
-  // Iniciar juego con Enter
-  keyboard.enter().onPressDo({
-  
-  menu.cerrar()
-  musicaInicio.stop()
-  
-  // Mostrar fondo según nivel actual
-  menu.mostrarMapaSegunNivel(interfaz.nivel())
-  
-
-  // cargar coordenadas de borde y mapa 1
-  //coordenadasBloqueadas.nivel1()
-  coordenadasBloqueadas.bordes()
-  coordenadasBloqueadas.nivel1()
-  //
-  // ======== Borde del mapa ============
-  /*
-  const bordeInferior = new MuroBorde(tipo = bloqueSur)
-  bordeInferior.concatenarMurosHorizontalesSegunTipo()
-
-  const bordeSuperior = new MuroBorde(tipo = bloqueNorte)
-  bordeSuperior.concatenarMurosHorizontalesSegunTipo()
-
-  const bordeOeste = new MuroBorde(tipo = bloqueOeste)
-  bordeOeste.concatenarMurosVerticaleslesSegunTipo()
-
-  const bordeEste = new MuroBorde(tipo = bloqueEste)
-  bordeEste.concatenarMurosVerticaleslesSegunTipo()
-
-  const esquinas = new MuroBorde(tipo = bloqueEsquina)
-  esquinas.generarEsquinas()
-  */
-  // ======== Muros internos ============
-  //murosInternos.generar()
-
-
-  // ===================================
-  
-  // personaje principal
-  //evitar poner add visual characters para que no mal use las flechas
-  game.addVisual(bomberman) 
-
-  const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  //game.addVisual(enemigoA)
-  //enemigoA.iniciarMovimiento()
-
-  const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-  //game.addVisual(enemigoB)
-
-  //enemigoB.iniciarMovimiento()
  
-  keyboard.w().onPressDo{
-    bomberman.subir()
-  }
-
-  keyboard.s().onPressDo{
-    bomberman.bajar()
-  }
-  keyboard.a().onPressDo{
-    bomberman.izquierda()
-  }
-  keyboard.d().onPressDo{
-    bomberman.derecha()
-  }
-
-  keyboard.space().onPressDo({
-      bomberman.ponerBombaConExplosion()
-  })
+ 
+  visualManager.pantallaDeInicio()
 
 
-   // ======== Interfaz ========
-   // son las vidas representadas como corazones
-    interfaz.mostrar()
-    interfaz.reiniciar()
-
-    // ======== Colisiones ========
-    game.onCollideDo(bomberman, { otro =>
-      if (otro == enemigoA or otro == enemigoB) {
-       // interfaz.perderUnaVida()
-      //bomberman.position(game.center())
-      }
-    })
-
-     })
 
   const stageTheme = game.sound("stage-theme.wav")
   //stageTheme.shouldLoop(true)

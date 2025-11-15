@@ -58,8 +58,6 @@ object bomberman {
     game.addVisual(nuevaBomba)
     
     nuevaBomba.iniciarCuentaRegresiva()
-    nuevaBomba.explotar()
-    
         
   }
 

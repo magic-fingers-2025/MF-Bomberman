@@ -55,23 +55,25 @@ object visualManager{
       })
     }
 
-    method pantallaDeInicio() {
-      // removemos primero todas las visuales 
-      self.removerVisualesDeLista()
-      listaDeEnemigos = []
+method pantallaDeInicio() {
+// removemos primero todas las visuales 
+  self.removerVisualesDeLista()
+  listaDeEnemigos =  #{}
 
-    const musicaInicio = game.sound("title-start.mp3")
-    musicaInicio.play()
-    menu.iniciar()
+  const musicaInicio = game.sound("title-start.mp3")
+  musicaInicio.play()
+  game.addVisual(pantallaInicio)
+
 
 
     
   // Iniciar juego con Enter
   keyboard.enter().onPressDo({
-  
-  interfaz.nivel(1)
 
-  menu.cerrar()
+  game.removeVisual(pantallaInicio)
+  interfaz.nivel(1)
+  menu.mostrarMapaSegunNivel(1)
+
   musicaInicio.stop()
 
   // coordenadas nivel 1
@@ -79,9 +81,10 @@ object visualManager{
   coordenadasBloqueadas.nivel1()
 
  // personaje principal
-  //evitar poner add visual characters para que no mal use las flechas
+
   game.addVisual(bomberman) 
   self.agregarVisualALista(bomberman)
+  
 // configuras a bomberman elteclado 
   self.configTeclado()
 
@@ -92,12 +95,11 @@ object visualManager{
   //enemigoA.iniciarMovimiento()
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-  //game.addVisual(enemigoB)
-  self.agregarVisualALista(enemigoA)
+  game.addVisual(enemigoB)
+  self.agregarVisualALista(enemigoB)
   self.agregarEnemigoALista(enemigoB)
   //enemigoB.iniciarMovimiento()
   
-
   interfaz.mostrar()
   interfaz.reiniciar()
   
@@ -110,11 +112,14 @@ object visualManager{
   
   method nivel2(){
     //poner la visual del nivel que corresponde
-    menu.mostrarMapaSegunNivel(2)
+    //menu.mostrarMapaSegunNivel(2)
     // personaje principal
-      
     game.addVisual(bomberman) 
     self.agregarVisualALista(bomberman)
+
+    coordenadasBloqueadas.bordes()
+    coordenadasBloqueadas.nivel2()
+
     // configuras a bomberman elteclado 
     self.configTeclado()
 
@@ -157,7 +162,7 @@ object visualManager{
 
 
    method evaluarSiGanaste(){
-    if (interfaz.nivel() == 2 and listaDeEnemigos.selzide() == 0)
+    if (interfaz.nivel() == 2 and listaDeEnemigos.cellSize() == 0)
     game.addVisual(pantallaGanaste)
     self.agregarVisualALista(pantallaGanaste)
     game.schedule(3000, {self.pantallaDeCreditos()})
