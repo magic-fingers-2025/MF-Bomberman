@@ -14,7 +14,7 @@ import bomba.*
 
 object visualManager{
 
-    const property visualesPuestas =#{}
+    var property visualesPuestas =#{}
     var property listaDeEnemigos = #{}
 
   // Metodos para agregar visuales a la lista
@@ -63,6 +63,7 @@ method pantallaDeInicio() {
   const musicaInicio = game.sound("title-start.mp3")
   musicaInicio.play()
   game.addVisual(pantallaInicio)
+  self.agregarVisualALista(pantallaInicio)
 
 
 
@@ -81,7 +82,7 @@ method pantallaDeInicio() {
   coordenadasBloqueadas.nivel1()
 
  // personaje principal
-
+  bomberman.position(game.center())
   game.addVisual(bomberman) 
   self.agregarVisualALista(bomberman)
   
@@ -99,7 +100,7 @@ method pantallaDeInicio() {
   self.agregarVisualALista(enemigoB)
   self.agregarEnemigoALista(enemigoB)
   //enemigoB.iniciarMovimiento()
-  
+
   interfaz.mostrar()
   interfaz.reiniciar()
   
@@ -114,9 +115,11 @@ method pantallaDeInicio() {
     //poner la visual del nivel que corresponde
     //menu.mostrarMapaSegunNivel(2)
     // personaje principal
+    menu.mostrarMapaSegunNivel(2)
+
     game.addVisual(bomberman) 
     self.agregarVisualALista(bomberman)
-
+    self.agregarVisualALista(fondoNivel2)
     coordenadasBloqueadas.bordes()
     coordenadasBloqueadas.nivel2()
 
@@ -147,6 +150,9 @@ method pantallaDeInicio() {
   // logica para schedule
   method evaluarSiPasaDeNivel() {
     if ( listaDeEnemigos.cellSize()== 0) {
+
+      
+
       interfaz.nivel(2)
 
       self.nivel2()
