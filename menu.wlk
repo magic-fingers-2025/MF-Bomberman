@@ -51,4 +51,24 @@ object menu {
     var property image = "ganaste.png"
     method position() = game.origin()
   }
+
+  object pantallaGameOver {
+      var property image = "game-over.png"
+      method position() = game.at(0.4, 0.4)
+      method sonido() = "gameOver.mpeg"
+  }
+
+  object pantallaDeCreditos {
+      var property image = "creditos.png"
+      method position() = game.origin()
+  }
+
+  object pantallaPasasteANivel2 {
+
+    /*   tenego que agregar bien la VISUAL ACAAAAAAAAA*/
+      var property image = "creditos.png"
+      method position() = game.origin()
+  }
+
+
   
