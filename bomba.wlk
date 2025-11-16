@@ -1,4 +1,6 @@
 import coordenadasBloqueadas.*
+import personajes.*
+
 //import wollok.game.*
 
 class Bomba{
@@ -42,6 +44,8 @@ class Bomba{
 
   // polimorfismo onCollide con ella misma
   method morir(){}
+
+ 
 }
 
 object controladorDeExplosiones {
@@ -72,8 +76,8 @@ object controladorDeExplosiones {
     game.addVisual(parte)
 
     // matar al que toca
-    game.onCollideDo(parte, { otro => otro.morir()})
-
+    //game.onCollideDo(parte, { otro =>  if(otro == Enemigo or otro == LLamaAzul or otro == bomberman) {otro.morir()}})
+    game.onCollideDo(parte , {otro => otro.morir()})
     // remover en 3 segundos o lo que quieran
     game.schedule(3000, {
       game.removeVisual(parte)
@@ -149,7 +153,3 @@ object controladorDeExplosiones {
 
 
 }
-
-
-
-

@@ -3,11 +3,13 @@ import coordenadasBloqueadas.*
 import wollok.game.*
 import fondo.*
 import bomba.*
+import controlador.*
+
 
 
 object bomberman {
   var property image = "3x-paso-der-frente-bomberman.png"
-  var property position = game.center()
+  var property position = game.at(1,1)
   //var property sonidoCaminar = game.sound("player_run.mp3")
 
   method subir() {
@@ -83,7 +85,6 @@ class Enemigo{
   
   method imagenes()
 
-  
   const property animacionMuerteGeneral = [
     "3x-death-general-1.png",
     "3x-death-general-2.png",
@@ -98,11 +99,11 @@ class Enemigo{
 
   method iniciarMovimiento(){
     if (direccionActual == "Arriba"){
-      const tick = game.tick(500, { self.moverArribaSiSePuede() }, false)
+      const tick = game.tick(1000, { self.moverArribaSiSePuede() }, false)
       tick.start()
     }
     else if (direccionActual == "Derecha"){
-      const tick = game.tick(500, { self.moverDerechaSiSePuede() }, false)
+      const tick = game.tick(1000, { self.moverDerechaSiSePuede() }, false)
       tick.start()
     }
   
@@ -193,8 +194,11 @@ class LLamaAzul inherits Enemigo{
 
   const tick2 = game.tick(100, { self.cambiarImagen() }, false)
   override method morir(){
-    estaVivo = false    
-    tick2.start()
+    if (estaVivo) {
+        estaVivo = false    
+        controlador.quitarEnemigo(self)
+        tick2.start()
+    }
   }
 
   method cambiarImagen(){

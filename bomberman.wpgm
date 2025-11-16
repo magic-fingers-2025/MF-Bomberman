@@ -5,6 +5,7 @@ import bomba.*
 import menu.*
 import interfaz.*
 import coordenadasBloqueadas.*
+import controlador.*
 
 program bombermanGame {
 
@@ -14,84 +15,9 @@ program bombermanGame {
   game.width(ancho)
   game.height(alto)
   game.cellSize(48) // tamaño celda 48
-  const musicaInicio = game.sound("title-start.mp3")
-  musicaInicio.play()
-  menu.iniciar()
-  
 
-  // Iniciar juego con Enter
-  keyboard.enter().onPressDo({
-  
-  menu.cerrar()
-  musicaInicio.stop()
-  
-  // Mostrar fondo según nivel actual
-  menu.mostrarMapaSegunNivel(interfaz.nivel())
-  
+  // arrancar el controlador
+  controlador.iniciarJuego()
 
-  // cargar coordenadas de borde y mapa 1
-  //coordenadasBloqueadas.nivel1()
-  coordenadasBloqueadas.bordes()
-  coordenadasBloqueadas.nivel1()
-  
-  // ===================================
-  
-  // personaje principal
-  //evitar poner add visual characters para que no mal use las flechas
-  game.addVisual(bomberman) 
-
-  const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  game.addVisual(enemigoA)
-  //enemigoA.iniciarMovimiento()
-
-  const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-  game.addVisual(enemigoB)
-
-  //enemigoB.iniciarMovimiento()
- 
-  keyboard.w().onPressDo{
-    bomberman.subir()
-  }
-
-  keyboard.s().onPressDo{
-    bomberman.bajar()
-  }
-  keyboard.a().onPressDo{
-    bomberman.izquierda()
-  }
-  keyboard.d().onPressDo{
-    bomberman.derecha()
-  }
-
-  keyboard.space().onPressDo({
-      bomberman.ponerBombaConExplosion()
-  })
-
-
-   // ======== Interfaz ========
-   // son las vidas representadas como corazones
-    interfaz.mostrar()
-    /*interfaz.reiniciar()*/
-
-    // ======== Colisiones ========
-    game.onCollideDo(bomberman, { otro =>
-      if (otro == enemigoA or otro == enemigoB ) {
-        interfaz.perderUnaVida()
-        bomberman.position(game.center())
-      }
-    })
-  })
-
-  const stageTheme = game.sound("stage-theme.wav")
-  //stageTheme.shouldLoop(true)
-  stageTheme.play()
-  
-  // fondo
-  //game.boardGround("piso2.png") // Es fijo. Si queremos un fondo que se mueva hay que usar un hack: definir un objeto que sea el fondo y cuyo tamaño sea el tamaño del tablero.
-
-  // para que arranque el juego
   game.start()
 }
-
-
-
