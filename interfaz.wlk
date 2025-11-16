@@ -10,15 +10,7 @@ object interfaz {
 
     const vidas = self.iniciarVidas()
 
-
-// todavia no andan los puntos porque no realizamos 
-    var marcador = object {
-        method position() = game.at(9, 0)
-        method draw(g) {
-            g.setColor("white")
-            g.drawText("Puntaje: " + interfaz.puntaje, 0, 0)
-        }
-    }
+    method morir(){}
 
     method mostrar() {
         game.addVisual(vidas.get(0))

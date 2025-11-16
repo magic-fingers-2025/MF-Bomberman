@@ -1,6 +1,8 @@
 
 import wollok.game.*
 object menu {
+
+  method morir(){}
   var property image = "inicio-bomberman.png"
   method position() = game.origin()
   
@@ -32,23 +34,42 @@ object menu {
  
 // —— BACKGROUNDS ——  
    object pantallaInicio{
-
+    method morir() {}
     var property image = "inicio-bomberman.png"
     method position() = game.origin()
   }
 
    object fondoNivel1 {
-    var property image = "menoscargado-map1.png"
-    method position() = game.origin()
-  }
-
-  object fondoNivel2 {
+    method morir() {}
     var property image = "map1-bomberman.png"
     method position() = game.origin()
   }
 
+  object pantallaPasasteANivel2 {
+    method morir() {}
+    var property image = "complete-lvl1.png"
+    method position() = game.origin()
+  }
+
+  object fondoNivel2 {
+    method morir() {}
+    var property image = "map2-bomberman.png"
+    method position() = game.origin()
+  }
+
   object pantallaGanaste{
+    method morir() {}
     var property image = "ganaste.png"
     method position() = game.origin()
   }
+
+
+  object pantallaCreditos{
+    method morir() {}
+    var property image = "creditos.png"
+    method position() = game.origin()
+  }
+
+
+
   

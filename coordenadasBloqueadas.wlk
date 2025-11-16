@@ -3,6 +3,8 @@ import fondo.*
 
 object coordenadasBloqueadas {
 
+   method morir(){}
+
   // conjunto inicial con los bordes del mapa
   // si no lo declaro como variable no me deja hacer reset
   var property posiciones = #{}

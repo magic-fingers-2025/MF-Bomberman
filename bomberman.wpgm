@@ -33,28 +33,7 @@ program bombermanGame {
   //coordenadasBloqueadas.nivel1()
   coordenadasBloqueadas.bordes()
   coordenadasBloqueadas.nivel1()
-  //
-  // ======== Borde del mapa ============
-  /*
-  const bordeInferior = new MuroBorde(tipo = bloqueSur)
-  bordeInferior.concatenarMurosHorizontalesSegunTipo()
-
-  const bordeSuperior = new MuroBorde(tipo = bloqueNorte)
-  bordeSuperior.concatenarMurosHorizontalesSegunTipo()
-
-  const bordeOeste = new MuroBorde(tipo = bloqueOeste)
-  bordeOeste.concatenarMurosVerticaleslesSegunTipo()
-
-  const bordeEste = new MuroBorde(tipo = bloqueEste)
-  bordeEste.concatenarMurosVerticaleslesSegunTipo()
-
-  const esquinas = new MuroBorde(tipo = bloqueEsquina)
-  esquinas.generarEsquinas()
-  */
-  // ======== Muros internos ============
-  //murosInternos.generar()
-
-
+  
   // ===================================
   
   // personaje principal
@@ -62,11 +41,11 @@ program bombermanGame {
   game.addVisual(bomberman) 
 
   const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  //game.addVisual(enemigoA)
+  game.addVisual(enemigoA)
   //enemigoA.iniciarMovimiento()
 
   const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-  //game.addVisual(enemigoB)
+  game.addVisual(enemigoB)
 
   //enemigoB.iniciarMovimiento()
  
@@ -92,11 +71,11 @@ program bombermanGame {
    // ======== Interfaz ========
    // son las vidas representadas como corazones
     interfaz.mostrar()
-    interfaz.reiniciar()
+    /*interfaz.reiniciar()*/
 
     // ======== Colisiones ========
     game.onCollideDo(bomberman, { otro =>
-      if (otro == enemigoA or otro == enemigoB or otro == explosion) {
+      if (otro == enemigoA or otro == enemigoB ) {
         interfaz.perderUnaVida()
         bomberman.position(game.center())
       }
