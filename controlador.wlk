@@ -31,7 +31,6 @@ method resetEstado(){
 enemigosActivos = #{}
 visualesPuestas = #{}
 nivelActual = 1
-interfaz.reiniciarVidas()
 interfaz.reiniciar()
 }
 
@@ -147,7 +146,7 @@ method mostrarPantallaFinal() {
 
     game.schedule(5000, { 
         game.removeVisual(menu.pantallaGanaste())
-        game.addVisual(menu.pantallaCreditos) 
+        game.addVisual(menu.pantallaCreditos()) 
     })
 
     game.schedule(10000, { 
@@ -186,7 +185,7 @@ keyboard.space().onPressDo({ bomberman.ponerBombaConExplosion() })
 method gameOver(){
 // mostrar pantalla game over, luego reset
 game.addVisual(menu.pantallaGameOver())
-game.schedule(3000, { game.removeVisual(menu.pantallaGameOver()); self.resetAndReturnToStart() })
+game.schedule(3000, { game.removeVisual(menu.pantallaGameOver()) self.resetAndReturnToStart() })
 }
 }
 

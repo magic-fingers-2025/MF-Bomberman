@@ -12,11 +12,11 @@ const property pantallaInicio = object {
   method position() = game.origin()
   method morir(){} }
 const property fondoNivel1 = object { 
-  method image() = "map1-bomberman.png"
+  method image() = "menoscargado-map1.png"
   method position() = game.origin()
   method morir(){} }
 const property fondoNivel2 = object { 
-  method image() = "map2-bomberman.png" 
+  method image() = "map1-bomberman.png" 
   method position() = game.origin() 
   method morir(){} }
 const property pantallaPasasteANivel2 = object { 

@@ -44,7 +44,7 @@ object interfaz {
       
   }
 
-  method reiniciarVidas(){ vidasRestantes = 3 }
+  method reiniciarVidas(){ vidasRestantes = 3 } //este esta al pedo pero por la dudas a este punto no borro nada :/
 
   
   method perderUnaVida() {
