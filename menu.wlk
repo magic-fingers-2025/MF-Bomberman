@@ -1,12 +1,16 @@
 
 import wollok.game.*
+
 object menu {
   var property image = "inicio-bomberman.png"
   method position() = game.origin()
   
+  
+  
   // con esta hacemos visible la que este en el momento
   method iniciar() {
     game.addVisual(self)
+    musicaInicio.play()
     
   }
 

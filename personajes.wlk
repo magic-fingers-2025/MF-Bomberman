@@ -1,22 +1,20 @@
-import MF-Bomberman.interfaz.*
-import coordenadasBloqueadas.*
+import interfaz.*
 import wollok.game.*
-import fondo.*
+import imagenes.*
 import bomba.*
 
 
 object bomberman {
-  var property image = "3x-paso-der-frente-bomberman.png"
+  var property image = "bomberman-paso-der-frente.png"
   var property position = game.center()
   //var property sonidoCaminar = game.sound("player_run.mp3")
 
   method subir() {
     const nuevaPos = position.up(1)
-    image = "3x-paso-der-espalda-bomberman.png"
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-espalda-bomberman.png"
+      image = "bomberman-paso-der-espalda.png"
     }
   }
 
@@ -25,28 +23,26 @@ object bomberman {
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-frente-bomberman.png"
+      image = "bomberman-paso-der-frente.png"
     }
 
   }
 
   method izquierda() {
     const nuevaPos = position.left(1)
-    image = "3x-paso-izq-frente-bomberman.png"
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-perfil-izquierdo-bomberman.png"
+      image = "bomberman-paso-der-perfil-izquierdo.png"
     }
   }
 
   method derecha() {
     const nuevaPos = position.right(1)
-    image = "3x-paso-der-frente-bomberman.png"
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-perfil-derecho-bomberman.png"
+      image = "bomberman-paso-der-perfil-derecho.png"
     }
   }
 
@@ -75,7 +71,7 @@ object bomberman {
 
 
 class Enemigo{
-  var property image = "3x-enemigo-A-1.png"
+  var property image = "enemigo-A-1.png"
   var property position
   var direccionActual = "Arriba"
   var indiceImagenActual = 0
@@ -86,14 +82,14 @@ class Enemigo{
 
   
   const property animacionMuerteGeneral = [
-    "3x-death-general-1.png",
-    "3x-death-general-2.png",
-    "3x-death-general-3.png",
-    "3x-death-general-4.png",
-    "3x-death-general-5.png",
-    "3x-death-general-6.png",
-    "3x-death-general-7.png",
-    "3x-death-general-8.png"
+    "death-general-1.png",
+    "death-general-2.png",
+    "death-general-3.png",
+    "death-general-4.png",
+    "death-general-5.png",
+    "death-general-6.png",
+    "death-general-7.png",
+    "death-general-8.png"
   ]
     
 
@@ -180,13 +176,13 @@ class Enemigo{
 
 class LLamaAzul inherits Enemigo{
   const imagenes= [
-    "3x-enemigo-A-1.png",
-    "3x-enemigo-A-3.png"
+    "enemigo-A-1.png",
+    "enemigo-A-3.png"
   ]
   
   const animacionMuerte = [
-    "3x-death-A-1.png",
-    "3x-death-A-2.png"
+    "death-A-1.png",
+    "death-A-2.png"
   ] + animacionMuerteGeneral
 
 
