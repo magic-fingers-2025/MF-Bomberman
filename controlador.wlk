@@ -6,12 +6,12 @@ import menu.*
 import interfaz.*
 import coordenadasBloqueadas.*
 
-
 object controlador {
 
 var property nivelActual = 1
-var property enemigosActivos = #{} // conjunto de enemigos vivos en pantalla
+var property enemigosActivos = #{} // enemigos vivos en pantalla
 var property visualesPuestas = #{} // para poder limpiar
+var property tecladoConfigurado = false // para que no se configure muchas veces
 
 
 method iniciarJuego() {
@@ -26,7 +26,7 @@ menu.iniciar()
 self.pantallaInicio()
 }
 
-
+// todo limpito
 method resetEstado(){
 enemigosActivos = #{}
 visualesPuestas = #{}
@@ -73,6 +73,7 @@ if (not game.hasVisual(bomberman)) {
     
 
 // configurar teclado
+
     self.configTeclado()}
 
 
@@ -82,9 +83,12 @@ self.crearEnemigosParaNivel(n)
 
 // mostrar interfaz
 if (not game.hasVisual(interfaz)) {
+
 // interfaz es un objeto con visuales (corazones)
-}
 interfaz.mostrar()
+
+}
+
 interfaz.reiniciarContadorEnemigos(enemigosActivos.size())
 }
 
@@ -111,6 +115,13 @@ game.addVisual(enemigo)
 enemigosActivos.add(enemigo)
 self.agregarVisualPuesta(enemigo)
 enemigo.iniciarMovimiento()
+
+ // COLISIÓN CON BOMBERMAN 
+    game.onCollideDo(enemigo, { otro =>
+        if (otro == bomberman) {
+            bomberman.morir()
+        }
+    })
 
 // cuando un enemigo muere, debe avisar al controlador
 }
@@ -174,11 +185,13 @@ visualesPuestas = #{}
 
 
 method configTeclado(){
+if(not self.tecladoConfigurado()){
 keyboard.w().onPressDo{ bomberman.subir() }
 keyboard.s().onPressDo{ bomberman.bajar() }
 keyboard.a().onPressDo{ bomberman.izquierda() }
 keyboard.d().onPressDo{ bomberman.derecha() }
-keyboard.space().onPressDo({ bomberman.ponerBombaConExplosion() })
+keyboard.space().onPressDo({ bomberman.ponerBombaConExplosion() })}
+
 }
 
 

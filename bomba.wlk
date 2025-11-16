@@ -1,5 +1,7 @@
 import coordenadasBloqueadas.*
 import personajes.*
+import controlador.*
+
 
 //import wollok.game.*
 
@@ -34,8 +36,8 @@ class Bomba{
       tick3.stop()
       //exploto = true 
       game.removeVisual(self)
+
       //explosion.explotar(self)  
-      
       controladorDeExplosiones.crearExplosion(position)
   
             
@@ -72,6 +74,8 @@ object controladorDeExplosiones {
       var property position = pos
       method morir(){}
     }
+    // claro, si no la agregaba al controlador nunca la sacaba
+    controlador.agregarVisualPuesta(parte)
 
     game.addVisual(parte)
 
