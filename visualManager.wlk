@@ -149,7 +149,7 @@ method pantallaDeInicio() {
 
   // logica para schedule
   method evaluarSiPasaDeNivel() {
-    if ( listaDeEnemigos.cellSize()== 0) {
+    if ( listaDeEnemigos.size()== 0) {
 
       
 
@@ -168,7 +168,7 @@ method pantallaDeInicio() {
 
 
    method evaluarSiGanaste(){
-    if (interfaz.nivel() == 2 and listaDeEnemigos.cellSize() == 0)
+    if (interfaz.nivel() == 2 and listaDeEnemigos.size() == 0)
     game.addVisual(pantallaGanaste)
     self.agregarVisualALista(pantallaGanaste)
     game.schedule(3000, {self.pantallaDeCreditos()})
