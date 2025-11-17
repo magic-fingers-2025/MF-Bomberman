@@ -38,13 +38,15 @@ object interfaz {
 
   method iniciarJuego() {
     // limpiar cualquier rastro
-    self.resetEstado() 
-    self.removerMenuInicio()
-    //game.removeVisual(pantallaInicio)
-    //sonido.detener(musicaInicio)    
-    // comenzar nivel 1 con ENTER
-    coordenadasBloqueadas.agregarBordes()
-    self.iniciarNivel(1)    
+    if (game.hasVisual(pantallaInicio)){
+      self.resetEstado() 
+      self.removerMenuInicio()
+      //game.removeVisual(pantallaInicio)
+      //sonido.detener(musicaInicio)    
+      // comenzar nivel 1 con ENTER
+      coordenadasBloqueadas.agregarBordes()
+      self.iniciarNivel(1)
+    }    
   }   
   
    // todo limpito
