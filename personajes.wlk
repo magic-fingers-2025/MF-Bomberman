@@ -1,22 +1,21 @@
-import MF-Bomberman.interfaz.*
-import coordenadasBloqueadas.*
+import interfaz.*
 import wollok.game.*
-import fondo.*
+import imagenes.*
 import bomba.*
+import niveles.*
 
 
 object bomberman {
-  var property image = "3x-paso-der-frente-bomberman.png"
+  var property image = "bomberman-paso-der-frente.png"
   var property position = game.center()
   //var property sonidoCaminar = game.sound("player_run.mp3")
 
   method subir() {
     const nuevaPos = position.up(1)
-    image = "3x-paso-der-espalda-bomberman.png"
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-espalda-bomberman.png"
+      image = "bomberman-paso-der-espalda.png"
     }
   }
 
@@ -25,42 +24,37 @@ object bomberman {
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-frente-bomberman.png"
+      image = "bomberman-paso-der-frente.png"
     }
 
   }
 
   method izquierda() {
     const nuevaPos = position.left(1)
-    image = "3x-paso-izq-frente-bomberman.png"
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-perfil-izquierdo-bomberman.png"
+      image = "bomberman-paso-der-perfil-izquierdo.png"
     }
   }
 
   method derecha() {
     const nuevaPos = position.right(1)
-    image = "3x-paso-der-frente-bomberman.png"
     if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
-      image = "3x-paso-der-perfil-derecho-bomberman.png"
+      image = "bomberman-paso-der-perfil-derecho.png"
     }
   }
 
   
   
 
-  method ponerBombaConExplosion() {
+  method ponerBomba() {
     const nuevaBomba = new Bomba(position = position)   
-    game.addVisual(nuevaBomba)
-    
+    if (not interfaz.visualesPuestas().contains(menu)){
+      game.addVisual(nuevaBomba)}  
     nuevaBomba.iniciarCuentaRegresiva()
-    nuevaBomba.explotar()
-    
-        
   }
 
   
@@ -68,6 +62,7 @@ object bomberman {
   // polimorfismo para el onCollide de la bomba
   method morir() {
      interfaz.perderUnaVida()
+     position = game.at(1,1)
   }
 
 }
@@ -75,7 +70,7 @@ object bomberman {
 
 
 class Enemigo{
-  var property image = "3x-enemigo-A-1.png"
+  var property image = "enemigo-A-1.png"
   var property position
   var direccionActual = "Arriba"
   var indiceImagenActual = 0
@@ -86,27 +81,32 @@ class Enemigo{
 
   
   const property animacionMuerteGeneral = [
-    "3x-death-general-1.png",
-    "3x-death-general-2.png",
-    "3x-death-general-3.png",
-    "3x-death-general-4.png",
-    "3x-death-general-5.png",
-    "3x-death-general-6.png",
-    "3x-death-general-7.png",
-    "3x-death-general-8.png"
+    "death-general-1.png",
+    "death-general-2.png",
+    "death-general-3.png",
+    "death-general-4.png",
+    "death-general-5.png",
+    "death-general-6.png",
+    "death-general-7.png",
+    "death-general-8.png"
   ]
     
-
+  const tickEnemigoArriba = game.tick(500, { self.moverArribaSiSePuede() }, false)
+  const tickEnemigoDerecha = game.tick(500, { self.moverDerechaSiSePuede() }, false)
+      
   method iniciarMovimiento(){
-    if (direccionActual == "Arriba"){
-      const tick = game.tick(500, { self.moverArribaSiSePuede() }, false)
-      tick.start()
+    if (direccionActual == "Arriba"){     
+      tickEnemigoArriba.start()
     }
     else if (direccionActual == "Derecha"){
-      const tick = game.tick(500, { self.moverDerechaSiSePuede() }, false)
-      tick.start()
+      tickEnemigoDerecha.start()
     }
   
+  }
+
+  method detenerMovimiento(){
+    tickEnemigoArriba.stop()
+    tickEnemigoDerecha.stop()
   }
 
  
@@ -175,40 +175,47 @@ class Enemigo{
 
   method morir()
 
+  
+
 }
 
 
 class LLamaAzul inherits Enemigo{
   const imagenes= [
-    "3x-enemigo-A-1.png",
-    "3x-enemigo-A-3.png"
+    "enemigo-A-1.png",
+    "enemigo-A-3.png"
   ]
   
   const animacionMuerte = [
-    "3x-death-A-1.png",
-    "3x-death-A-2.png"
+    "death-A-1.png",
+    "death-A-2.png"
   ] + animacionMuerteGeneral
 
 
   override method imagenes() = imagenes
 
-  const tick2 = game.tick(100, { self.cambiarImagen() }, false)
-  override method morir(){
-    estaVivo = false    
-    tick2.start()
-  }
-
-  method cambiarImagen(){
+  const tick2 = game.tick(250, { self.animarMuerte() }, false)
+  
+  method animarMuerte(){
     if (indiceAnimacionMuerte < animacionMuerte.size()){
       image = animacionMuerte.get(indiceAnimacionMuerte)
       indiceAnimacionMuerte = indiceAnimacionMuerte + 1
     }
     else{
-      tick2.stop() 
-      game.removeVisual(self)
-           
+      tick2.stop()            
     }
   }
+
+  override method morir(){      
+    tick2.start()
+    interfaz.quitarEnemigo(self)
+    self.detenerMovimiento()
+    game.removeVisual(self)
+    
+  }
+
+  
+ 
 
 }
 

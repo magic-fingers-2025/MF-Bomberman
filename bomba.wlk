@@ -1,4 +1,6 @@
-import MF-Bomberman.coordenadasBloqueadas.coordenadasBloqueadas
+import interfaz.*
+import niveles.*
+import sonidos.*
 //import wollok.game.*
 
 class Bomba{
@@ -24,15 +26,17 @@ class Bomba{
   }
 
   method cambiarImagenBomba(){
-    if (indiceAnimacionBomba< animacionBomba.size()){
+    if (indiceAnimacionBomba < animacionBomba.size()){
       image = animacionBomba.get(indiceAnimacionBomba)
       indiceAnimacionBomba +=1
     }
     else{
       tick3.stop()
+      self.hacerRuido()
       //exploto = true 
       game.removeVisual(self)
-      //explosion.explotar(self)  
+      //explosion.explotar(self) 
+       
       
       controladorDeExplosiones.crearExplosion(position)
   
@@ -40,6 +44,9 @@ class Bomba{
     }  
   } 
 
+  method hacerRuido(){
+    sonido.reproducir(explosion)
+  }
   // polimorfismo onCollide con ella misma
   method morir(){}
 /*
@@ -63,12 +70,13 @@ class Bomba{
 */
 }
 
-object explosion {
-  
-}
 object controladorDeExplosiones {
 
+  
+
   method crearExplosion(posicionBomba) {
+
+
 
     self.crearParte(
       posicionBomba,
@@ -86,6 +94,7 @@ object controladorDeExplosiones {
     const parte = object {
       var property image = imagen
       var property position = pos
+
     }
 
     game.addVisual(parte)
@@ -94,7 +103,7 @@ object controladorDeExplosiones {
     game.onCollideDo(parte, { otro => otro.morir()})
 
     // remover en 3 segundos o lo que quieran
-    game.schedule(3000, {
+    game.schedule(1000, {
       game.removeVisual(parte)
     })
   }
