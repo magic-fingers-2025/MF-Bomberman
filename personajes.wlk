@@ -7,7 +7,7 @@ import niveles.*
 
 object bomberman {
   var property image = "bomberman-paso-der-frente.png"
-  var property position = game.origin()
+  var property position = game.at(1,1)
   //var property sonidoCaminar = game.sound("player_run.mp3")
 
   method subir() {
