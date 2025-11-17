@@ -4,17 +4,17 @@ import sonidos.*
 //import wollok.game.*
 
 class Bomba{
-  var property image = "3x-bomba-1.png"
+  var property image = "bomba-1.png"
   var property position
   var indiceAnimacionBomba = 0
 
     const animacionBomba = [
-    "3x-bomba-1.png",
-    "3x-bomba-2.png",
-    "3x-bomba-3.png",
-    "3x-bomba-1.png",
-    "3x-bomba-2.png",
-    "3x-bomba-3.png"
+    "bomba-1.png",
+    "bomba-2.png",
+    "t-bomba-3.png",
+    "bomba-1.png",
+    "bomba-2.png",
+    "t-bomba-3.png"
     
   ]
 
@@ -80,7 +80,7 @@ object controladorDeExplosiones {
 
     self.crearParte(
       posicionBomba,
-      "3x-explocion-centro-1.png"
+      "t-explocion-centro-1.png"
     )
 
     self.propagarse(posicionBomba)
@@ -121,11 +121,11 @@ object controladorDeExplosiones {
 
     var pos1 = game.at(x, y + 1)
     if (not coordenadasBloqueadas.estaBloqueada(pos1)) {
-      self.crearParte(pos1, "3x-explocion-vertical-etapa2-2.png")
+      self.crearParte(pos1, "t-explocion-vertical-etapa2-2.png")
 
       var pos2 = game.at(x, y + 2)
       if (not coordenadasBloqueadas.estaBloqueada(pos2)) {
-        self.crearParte(pos2, "3x-explocion-vertical-etapa2-1.png")
+        self.crearParte(pos2, "t-explocion-vertical-etapa2-1.png")
       }
     }
   }
@@ -136,11 +136,11 @@ object controladorDeExplosiones {
 
     var pos1 = game.at(x, y - 1)
     if (not coordenadasBloqueadas.estaBloqueada(pos1)) {
-      self.crearParte(pos1, "3x-explocion-vertical-etapa2-2.png")
+      self.crearParte(pos1, "t-explocion-vertical-etapa2-2.png")
 
       var pos2 = game.at(x, y - 2)
       if (not coordenadasBloqueadas.estaBloqueada(pos2)) {
-        self.crearParte(pos2, "3x-explocion-vertical-etapa2-3.png")
+        self.crearParte(pos2, "t-explocion-vertical-etapa2-3.png")
       }
     }
   }
@@ -151,11 +151,11 @@ object controladorDeExplosiones {
 
     var pos1 = game.at(x - 1, y)
     if (not coordenadasBloqueadas.estaBloqueada(pos1)) {
-      self.crearParte(pos1, "3x-explosion-horizontal-estapa1-2.png")
+      self.crearParte(pos1, "t-explosion-horizontal-estapa1-2.png")
 
       var pos2 = game.at(x - 2, y)
       if (not coordenadasBloqueadas.estaBloqueada(pos2)) {
-        self.crearParte(pos2, "3x-explosion-horizontal-estapa1-1.png")
+        self.crearParte(pos2, "t-explosion-horizontal-estapa1-1.png")
       }
     }
   }
@@ -166,11 +166,11 @@ object controladorDeExplosiones {
 
     var pos1 = game.at(x + 1, y)
     if (not coordenadasBloqueadas.estaBloqueada(pos1)) {
-      self.crearParte(pos1, "3x-explosion-horizontal-estapa1-2.png")
+      self.crearParte(pos1, "t-explosion-horizontal-estapa1-2.png")
 
       var pos2 = game.at(x + 2, y)
       if (not coordenadasBloqueadas.estaBloqueada(pos2)) {
-        self.crearParte(pos2, "3x-explosion-horizontal-estapa1-3.png")
+        self.crearParte(pos2, "t-explosion-horizontal-estapa1-3.png")
       }
     }
   }

@@ -145,8 +145,12 @@ object coordenadasBloqueadas {
   }
 
   // para registrar varias de una vez
-  method agregarCoordenadas(lista) {
-    lista.forEach({ c => posiciones.add(c) })
+  method agregarCoordenadas(set) {
+    set.forEach({ c => posiciones.add(c) })
+  }
+
+  method removerCoordenadas(set){
+    set.forEach{c => posiciones.remove(c)}
   }
 
   // verificar si una celda está bloqueada

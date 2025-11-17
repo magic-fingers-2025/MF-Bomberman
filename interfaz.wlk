@@ -241,6 +241,7 @@ object interfaz {
 
   method mostrarPasoANivel2() {
     nivelActual.desactivarMusicaDeFondo()
+    coordenadasBloqueadas.removerCoordenadas(nivelActual.coordenadasBloqueadas())
     game.addVisual(pantallaPasasteANivel2)
     nivelActual = nivel2
     
