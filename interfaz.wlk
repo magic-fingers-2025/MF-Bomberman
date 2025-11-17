@@ -8,18 +8,22 @@ import niveles.*
 
 object interfaz {
 
+  // Controla todas las visuales, el paso de nivel, las vidas
+
   var property vidasRestantes = 3
   var property numeroDeNivel = 1
   var property nivelActual = nivel1
   var property sonidoActual = nivelActual.musicaDeFondo()  
-  //var enemigosRestantes = nivelActual.cantidadDeEnemigos()
-  var property enemigosActivos = #{} // enemigos vivos en pantalla
+  
+  // enemigos vivos en pantalla
+  var property enemigosActivos = #{}
+
+  // ========= CONTROL DE VISUALES ACUMULADAS ===========
+  // Si podemos controlar sacar la mayor cantidad de visuales de una, se reducen errores 
   var property visualesPuestas = #{pantallaInicio}
 
   method enemigosRestantes() = enemigosActivos.size()
-  //method eliminarEnemigo(){
-    //enemigosRestantes-= 1
-  //}
+
 
   method agregarVisualAlStack(objeto){
     visualesPuestas.add(objeto)
@@ -29,6 +33,20 @@ object interfaz {
     visualesPuestas.forEach({ v => if (game.hasVisual(v)) game.removeVisual(v) })
     visualesPuestas = #{}
   }
+
+  // ================= INICIO JUEGO ==============================  
+
+  method iniciarJuego() {
+    // limpiar cualquier rastro
+    self.resetEstado() 
+    self.removerMenuInicio()
+    //game.removeVisual(pantallaInicio)
+    //sonido.detener(musicaInicio)    
+    // comenzar nivel 1 con ENTER
+    coordenadasBloqueadas.agregarBordes()
+    self.iniciarNivel(1)    
+  }   
+  
    // todo limpito
   method resetEstado(){
     self.removerVisualesPuestas()
@@ -48,26 +66,14 @@ object interfaz {
     sonido.detener(musicaInicio)
   }
 
-  method iniciarJuego() {
-    // limpiar cualquier rastro
-    self.resetEstado() 
-    self.removerMenuInicio()
-    //game.removeVisual(pantallaInicio)
-    //sonido.detener(musicaInicio)    
-    // comenzar nivel 1 con ENTER
-    coordenadasBloqueadas.agregarBordes()
-    self.iniciarNivel(1)    
-  }   
-  
-
   method iniciarNivel(n){
     // limpiar antes    
     self.removerVisualesPuestas()
-    //nivelActual.desactivarMusicaDeFondo()
+    // Actualizar
     numeroDeNivel = n
-    //nivelActual = nivel1
-    //nivelActual = niveles.listaDeNiveles().filter({n => n.id()==n}).anyOne()
-    self.mostrarMapaSegunNivel(n)
+    nivelActual = niveles.listaDeNiveles().filter{nivel => nivel.id()==n}.anyOne()
+    //self.mostrarMapaSegunNivel(n)
+    self.mostrarMapaSegunNivelVersion2(n)
     nivelActual.activarMusicaDeFondo()
     self.agregarVisualAlStack(nivelActual)
     coordenadasBloqueadas.agregarCoordenadas(nivelActual.coordenadasBloqueadas())
@@ -79,18 +85,9 @@ object interfaz {
     
   }
   
-  method mostrarMapaSegunNivel(n){
-    if (n==1){
-      nivelActual = nivel1
-      game.addVisual(nivel1)
-      
-    }
-    else{
-      game.addVisual(nivel2)
-      self.nivelActual(nivel2)
-    }  
-    //game.addVisual(niveles.listaDeNiveles().filter{n => n.id()==n}.anyOne())    
-    //nivelActual.activarEnemigos()
+  
+  method mostrarMapaSegunNivelVersion2(n){
+    game.addVisual(niveles.listaDeNiveles().filter{nivel => nivel.id()==n}.anyOne()) 
   }
 
   method iniciarVidas(){
@@ -117,7 +114,6 @@ object interfaz {
     game.removeVisual(vidas.get(0))
     game.removeVisual(vidas.get(1))
     game.removeVisual(vidas.get(2))
-    //self.mostrar() // ESTO
   }
 
   method perderUnaVida() {
@@ -148,25 +144,6 @@ object interfaz {
 
   }
 
-  /*
-  method resetAndReturnToStart(){
-  // limpiar todo y volver al inicio    
-    self.resetEstado()
-    self.iniciarJuego()
-  }
-  */
-
- 
-
-  method reiniciar(){
-    
-    //sonido.reproducir(musicaGanaste)
-    
-    //self.removerVidas()
-    //self.removerVisuales()    
-    //sonidoActual = musicaGameOver
-    game.schedule(12000, {self.volverAlMenu()})
-  }
 
   method removerVisuales() {
     game.removeVisual(nivelActual)
@@ -178,14 +155,7 @@ object interfaz {
     self.mostrarMenuInicio()    
   }
 
-  /*
-  method cambiarNivel(){
-
-    // si no hay rivales en pantalla, pasar al siguiente- Hacemos que se cambie del 1 al 2 y asi
-      if (nivelActual == nivel1) nivelActual = nivel2 else nivelActual = nivel1
-
-  }
-  */
+ 
 
   method crearEnemigosParaNivel(n) {
     // ejemplo simple: nivel 1 -> 2 enemigos; nivel 2 -> 3 enemigos
@@ -222,8 +192,7 @@ object interfaz {
   
   method quitarEnemigo(enemigo) {
     enemigosActivos.remove(enemigo)
-    //self.eliminarEnemigo()
-    // si se acabaron los enemigos del nivel
+  
     if (self.enemigosRestantes() == 0) {
         self.procesarFinDeNivel()
     }
@@ -243,7 +212,7 @@ object interfaz {
     nivelActual.desactivarMusicaDeFondo()
     coordenadasBloqueadas.removerCoordenadas(nivelActual.coordenadasBloqueadas())
     game.addVisual(pantallaPasasteANivel2)
-    nivelActual = nivel2
+    //nivelActual = nivel2
     
     game.schedule(2000, { 
         game.removeVisual(pantallaPasasteANivel2) 
@@ -253,7 +222,8 @@ object interfaz {
 
 
   method mostrarPantallaFinal() {    
-    nivelActual.desactivarMusicaDeFondo()    
+    nivelActual.desactivarMusicaDeFondo()
+    coordenadasBloqueadas.removerCoordenadas(nivelActual.coordenadasBloqueadas())    
     self.removerVisualesPuestas()
     sonido.reproducir(musicaGanaste)
     game.addVisual(pantallaGanaste)
@@ -277,7 +247,49 @@ object interfaz {
 
 
 
+// ============== DEPRECATED ===============
 
+/*
+  method mostrarMapaSegunNivel(n){
+    if (n==1){
+      nivelActual = nivel1
+      game.addVisual(nivel1)
+      
+    }
+    else{
+      game.addVisual(nivel2)
+      self.nivelActual(nivel2)
+    }  
+    //game.addVisual(niveles.listaDeNiveles().filter{n => n.id()==n}.anyOne())    
+    //nivelActual.activarEnemigos()
+  }
+
+  
+  method resetAndReturnToStart(){
+  // limpiar todo y volver al inicio    
+    self.resetEstado()
+    self.iniciarJuego()
+  }
+  
+   
+  method cambiarNivel(){
+
+    // si no hay rivales en pantalla, pasar al siguiente- Hacemos que se cambie del 1 al 2 y asi
+      if (nivelActual == nivel1) nivelActual = nivel2 else nivelActual = nivel1
+
+  }
+
+  method reiniciar(){    
+  //sonido.reproducir(musicaGanaste)    
+  //self.removerVidas()
+  //self.removerVisuales()    
+  //sonidoActual = musicaGameOver
+  game.schedule(12000, {self.volverAlMenu()})
+  }
+  
+  
+// ====================================================
+*/
 
 
 
