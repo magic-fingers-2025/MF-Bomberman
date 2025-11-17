@@ -12,7 +12,7 @@ object bomberman {
 
   method subir() {
     const nuevaPos = position.up(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-espalda.png"
@@ -21,7 +21,7 @@ object bomberman {
 
   method bajar() {
     const nuevaPos = position.down(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-frente.png"
@@ -31,7 +31,7 @@ object bomberman {
 
   method izquierda() {
     const nuevaPos = position.left(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if ( not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-perfil-izquierdo.png"
@@ -40,7 +40,7 @@ object bomberman {
 
   method derecha() {
     const nuevaPos = position.right(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if ( not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-perfil-derecho.png"
@@ -113,7 +113,7 @@ class Enemigo{
   method moverArribaSiSePuede() {
     const nuevaPos = position.up(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Arriba" and estaVivo){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Arriba" and estaVivo){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
@@ -128,7 +128,7 @@ class Enemigo{
   method moverAbajoSiSePuede() {
     
     const nuevaPos = position.down(1)
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Abajo" and estaVivo){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Abajo" and estaVivo){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
@@ -144,7 +144,7 @@ class Enemigo{
   method moverDerechaSiSePuede() {
     const nuevaPos = position.right(1)
 
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Derecha" and estaVivo){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Derecha" and estaVivo){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
@@ -160,7 +160,7 @@ class Enemigo{
   method moverIzquierdaSiSePuede() {
     const nuevaPos = position.left(1)
     
-    if (not coordenadasBorde.coordenadas().contains([nuevaPos.x(), nuevaPos.y()]) and not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Izquierda"){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos) and direccionActual == "Izquierda"){
       position = nuevaPos
       image = self.imagenes().get(indiceImagenActual)
       indiceImagenActual = (indiceImagenActual + 1) % self.imagenes().size()
