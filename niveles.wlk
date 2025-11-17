@@ -76,7 +76,7 @@ object nivel2{
   const property musicaDeFondo = musicaNivel2
   var property image = "map2-bomberman.png"
   method position() = game.origin()
-  const property coordenadasBloqueadas = #{}
+  const property coordenadasBloqueadas = #{[2,4], [2, 7], [2, 10], [2, 13], [2, 16],[5, 4], [5, 7], [5, 10], [5, 13], [5, 16], [8, 4], [8, 7], [8, 10], [8, 13], [8, 16], [11, 4], [11, 7], [11, 10], [11, 13], [11, 16], [14, 4], [14, 7], [14, 10], [14, 13], [14, 16], [17, 4], [17, 7], [17, 10], [17, 13], [17, 16], [20, 4], [20, 7], [20, 10], [20, 13], [20, 16], [5, 18], [11, 18], [17, 18], [8, 2], [14, 2]}
 
    method activarMusicaDeFondo(){
     sonido.reproducir(musicaDeFondo)
@@ -87,39 +87,8 @@ object nivel2{
     sonido.detener(musicaDeFondo)
   }
 
-  /*
-                          
-  
-  method activarEnemigos(){
-    const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-    game.addVisual(enemigoA)
-    enemigoA.iniciarMovimiento()
-
-    const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-    game.addVisual(enemigoB)
-    enemigoB.iniciarMovimiento()
-
-    game.onCollideDo(enemigoA, {elemento => if (elemento == bomberman){elemento.morir()}})
-    game.onCollideDo(enemigoB, {elemento => if (elemento == bomberman){elemento.morir()}})
- 
-  }
-
-  method activarMusicaDeFondo(){
-    sonido.reproducir(musicaDeFondo)
-    interfaz.sonidoActual(musicaDeFondo)
-  }
-
-  method desactivarMusicaDeFondo(){
-    sonido.detener(musicaDeFondo)
-  }
-
 
   
-  
-  
-  method morir(){}
-
-*/
 }
 
 
