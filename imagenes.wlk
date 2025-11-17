@@ -3,40 +3,65 @@ import interfaz.*
 
 class Imagen {
   var property position = game.at(0, 0)
-  const imagen
-  
-  method image() = imagen
-  
+  const imagen  
+  method image() = imagen  
   method position() = position
+  const property id  = 1
 }
 
 const menu = new Imagen(imagen = "inicio-bomberman.png")
-
-const nivel1 = new Imagen(imagen = "menoscargado-map1.png")
 
 const ganaste = new Imagen(imagen = "ganaste.png")
 
 //const perdiste = new Imagen(imagen = "pantallaPerdiste.jpg")
 
+const pantallaInicio = new Imagen(
+  imagen = "inicio-bomberman.png",
+  position = game.at(0, 0)
+  
+)
+
+const pantallaPasasteANivel2 = new Imagen(
+  imagen = "complete-lvl1.png",
+  position = game.at(0, 0)
+  
+)
+
+const pantallaGanaste = new Imagen(
+  imagen = "ganaste.png",
+  position = game.at(0, 0)
+  
+)
+
+const pantallaCreditos = new Imagen(
+  imagen = "creditos.png",
+  position = game.at(0, 0)
+  
+)
 
 const corazon1 = new Imagen(
   imagen = "corazon.png",
-  position = game.at(1, 0)
+  position = game.at(1, 0),
+  id = 1
 )
 
 const corazon2 = new Imagen(
   imagen = "corazon.png",
-  position = game.at(2, 0)
+  position = game.at(2, 0),
+  id = 2
 )
 
 const corazon3 = new Imagen(
   imagen = "corazon.png",
-  position = game.at(3, 0)
+  position = game.at(3, 0),
+  id = 3
 )
 
-const pasoDerechaFrente = new Imagen(
-  imagen = "3x-paso-der-frente-bomberman.png"  
+const gameOverPantalla = new Imagen(
+  imagen = "game-over.png",
+  position = game.at(0, 0)
 )
+
 
 
 /*

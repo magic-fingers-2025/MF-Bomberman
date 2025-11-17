@@ -2,6 +2,7 @@ import interfaz.*
 import wollok.game.*
 import imagenes.*
 import bomba.*
+import niveles.*
 
 
 object bomberman {
@@ -49,14 +50,11 @@ object bomberman {
   
   
 
-  method ponerBombaConExplosion() {
+  method ponerBomba() {
     const nuevaBomba = new Bomba(position = position)   
-    game.addVisual(nuevaBomba)
-    
+    if (not interfaz.visualesPuestas().contains(menu)){
+      game.addVisual(nuevaBomba)}  
     nuevaBomba.iniciarCuentaRegresiva()
-    nuevaBomba.explotar()
-    
-        
   }
 
   
@@ -64,6 +62,7 @@ object bomberman {
   // polimorfismo para el onCollide de la bomba
   method morir() {
      interfaz.perderUnaVida()
+     position = game.at(1,1)
   }
 
 }
@@ -92,17 +91,22 @@ class Enemigo{
     "death-general-8.png"
   ]
     
-
+  const tickEnemigoArriba = game.tick(500, { self.moverArribaSiSePuede() }, false)
+  const tickEnemigoDerecha = game.tick(500, { self.moverDerechaSiSePuede() }, false)
+      
   method iniciarMovimiento(){
-    if (direccionActual == "Arriba"){
-      const tick = game.tick(500, { self.moverArribaSiSePuede() }, false)
-      tick.start()
+    if (direccionActual == "Arriba"){     
+      tickEnemigoArriba.start()
     }
     else if (direccionActual == "Derecha"){
-      const tick = game.tick(500, { self.moverDerechaSiSePuede() }, false)
-      tick.start()
+      tickEnemigoDerecha.start()
     }
   
+  }
+
+  method detenerMovimiento(){
+    tickEnemigoArriba.stop()
+    tickEnemigoDerecha.stop()
   }
 
  
@@ -171,6 +175,8 @@ class Enemigo{
 
   method morir()
 
+  
+
 }
 
 
@@ -188,23 +194,28 @@ class LLamaAzul inherits Enemigo{
 
   override method imagenes() = imagenes
 
-  const tick2 = game.tick(100, { self.cambiarImagen() }, false)
-  override method morir(){
-    estaVivo = false    
-    tick2.start()
-  }
-
-  method cambiarImagen(){
+  const tick2 = game.tick(250, { self.animarMuerte() }, false)
+  
+  method animarMuerte(){
     if (indiceAnimacionMuerte < animacionMuerte.size()){
       image = animacionMuerte.get(indiceAnimacionMuerte)
       indiceAnimacionMuerte = indiceAnimacionMuerte + 1
     }
     else{
-      tick2.stop() 
-      game.removeVisual(self)
-           
+      tick2.stop()            
     }
   }
+
+  override method morir(){      
+    tick2.start()
+    interfaz.quitarEnemigo(self)
+    self.detenerMovimiento()
+    game.removeVisual(self)
+    
+  }
+
+  
+ 
 
 }
 
