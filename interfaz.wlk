@@ -9,7 +9,6 @@ import niveles.*
 object interfaz {
 
   var property vidasRestantes = 3
-  var esJuegoNuevo = true
   var property numeroDeNivel = 1
   var property nivelActual = nivel1
   var property sonidoActual = nivelActual.musicaDeFondo()  
@@ -192,9 +191,9 @@ object interfaz {
     // ejemplo simple: nivel 1 -> 2 enemigos; nivel 2 -> 3 enemigos
     if (n == 1) {
     const e1 = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-    const e2 = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
+    //const e2 = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
     self.agregarEnemigo(e1)
-    self.agregarEnemigo(e2)
+    //self.agregarEnemigo(e2)
     }else {
     const e1 = new LLamaAzul(position = game.at(1,18), direccionActual = "Arriba")
     const e2 = new LLamaAzul(position = game.at(18,1), direccionActual = "Derecha")

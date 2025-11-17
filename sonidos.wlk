@@ -37,7 +37,7 @@ object musicaNivel2 {
 	const property pista = game.sound("nivel2-tema.wav")
 	
 	method config() {
-		pista.volume(0.5)
+		pista.volume(0.4)
 		pista.shouldLoop(true)
 	}
 }
