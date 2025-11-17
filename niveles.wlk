@@ -30,43 +30,6 @@ object nivel1 {
     sonido.detener(musicaDeFondo)
   }
 
-
-  /*                      
-  const enemigoA = new LLamaAzul(position = game.at(10,10), direccionActual = "Arriba")
-  const enemigoB = new LLamaAzul(position = game.at(15,7), direccionActual = "Derecha")
-
-  
-  method activarEnemigos(){    
-    game.addVisual(enemigoA)
-    game.addVisual(enemigoB)
-    enemigoA.iniciarMovimiento()     
-    enemigoB.iniciarMovimiento()
-
-    game.onCollideDo(enemigoA, {elemento => if (elemento == bomberman){elemento.morir()}})
-    game.onCollideDo(enemigoB, {elemento => if (elemento == bomberman){elemento.morir()}})
- 
-  }
-
-  method activarMusicaDeFondo(){
-    sonido.reproducir(musicaDeFondo)
-    interfaz.sonidoActual(musicaDeFondo)
-  }
-
-  method desactivarMusicaDeFondo(){
-    sonido.detener(musicaDeFondo)
-  }
-  
-  method desactivarEnemigos(){    
-    enemigoA.detenerMovimiento()
-    enemigoB.detenerMovimiento()
-    game.removeVisual(enemigoA)
-    game.removeVisual(enemigoB)
-
-  }
-  
-  method morir(){}
-
-  */
   
 }
 
