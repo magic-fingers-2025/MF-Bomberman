@@ -9,7 +9,7 @@ class Imagen {
   const property id  = 1
 }
 
-const menu = new Imagen(imagen = "inicio-bomberman.png")
+//const menu = new Imagen(imagen = "inicio-bomberman.png")
 
 const ganaste = new Imagen(imagen = "ganaste.png")
 

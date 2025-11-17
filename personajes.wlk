@@ -7,12 +7,12 @@ import niveles.*
 
 object bomberman {
   var property image = "bomberman-paso-der-frente.png"
-  var property position = game.center()
+  var property position = game.at(1,1)
   //var property sonidoCaminar = game.sound("player_run.mp3")
 
   method subir() {
     const nuevaPos = position.up(1)
-    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos) and not interfaz.visualesPuestas().contains(pantallaInicio)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-espalda.png"
@@ -21,7 +21,7 @@ object bomberman {
 
   method bajar() {
     const nuevaPos = position.down(1)
-    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if (not coordenadasBloqueadas.estaBloqueada(nuevaPos) and not interfaz.visualesPuestas().contains(pantallaInicio)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-frente.png"
@@ -31,7 +31,7 @@ object bomberman {
 
   method izquierda() {
     const nuevaPos = position.left(1)
-    if ( not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if ( not coordenadasBloqueadas.estaBloqueada(nuevaPos) and not interfaz.visualesPuestas().contains(pantallaInicio)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-perfil-izquierdo.png"
@@ -40,7 +40,7 @@ object bomberman {
 
   method derecha() {
     const nuevaPos = position.right(1)
-    if ( not coordenadasBloqueadas.estaBloqueada(nuevaPos)){
+    if ( not coordenadasBloqueadas.estaBloqueada(nuevaPos) and not interfaz.visualesPuestas().contains(pantallaInicio)){
       position = nuevaPos
       game.sound("PLAYER_WALK.wav").play()
       image = "bomberman-paso-der-perfil-derecho.png"
@@ -52,9 +52,10 @@ object bomberman {
 
   method ponerBomba() {
     const nuevaBomba = new Bomba(position = position)   
-    if (not interfaz.visualesPuestas().contains(menu)){
-      game.addVisual(nuevaBomba)}  
-    nuevaBomba.iniciarCuentaRegresiva()
+    if (not interfaz.visualesPuestas().contains(pantallaInicio)){
+      game.addVisual(nuevaBomba)  
+      nuevaBomba.iniciarCuentaRegresiva()
+    }
   }
 
   

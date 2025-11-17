@@ -58,6 +58,7 @@ object interfaz {
   method mostrarMenuInicio(){
     game.addVisual(pantallaInicio)
     sonido.reproducir(musicaInicio)
+    self.agregarVisualAlStack(pantallaInicio)
 
   }
 
